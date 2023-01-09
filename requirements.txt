@@ -1,0 +1,4 @@
+boto3
+pandas
+openpyxl
+nesta_ds_utils @ git+https://github.com/nestauk/nesta_ds_utils.git
