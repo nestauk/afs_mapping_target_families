@@ -93,7 +93,7 @@ def streamlit_asq():
         lsoas_to_plot = data["ONS code"].unique()
 
     regions = alt.topo_feature(
-        "topo_lookup.json",
+        "https://raw.githubusercontent.com/nestauk/afs_mapping_target_families/2_streamlit_app/afs_mapping_target_families/analysis/streamlit_app/topo_lookup.json",
         "lad",
     )
     map_data = data.copy()
@@ -113,7 +113,7 @@ def streamlit_asq():
             # And we want to combine it with the data, using the "lsoa_code" field to link it, and then we want to bring across a number of columns from the WIMD dataset.
             from_=alt.LookupData(
                 map_data,
-                "Area",
+                "ONS code",
                 [
                     "Region",
                     "p_above_avg_comms",
