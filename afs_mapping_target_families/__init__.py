@@ -16,6 +16,7 @@ def get_yaml_config(file_path: Path) -> Optional[dict]:
 
 # Define project base directory
 PROJECT_DIR = Path(__file__).resolve().parents[1]
+BUCKET_NAME = "afs-mapping-target-families"
 
 # Define log output locations
 info_out = str(PROJECT_DIR / "info.log")
