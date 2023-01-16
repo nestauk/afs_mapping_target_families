@@ -6,8 +6,12 @@ import altair as alt
 import utils
 from PIL import Image
 from itertools import chain
-
+from afs_mapping_target_families.getters.processed.combined_data import (
+    get_combined_data,
+)
 import os
+from afs_mapping_target_families import PROJECT_DIR
+from statistics import mean
 
 ## For some unknown reason, Streamlit won't let you import this. I'm also not sure Streamlit will be able to read from S3, we've got round this by putting the data in
 ## the same folder as the Streamlit app which is fine for publically available data.
@@ -31,14 +35,18 @@ alt.themes.enable("nestafont")
 colours = utils.NESTA_COLOURS
 
 # here we load the favicon and we set the page config (so what appears in the tab on your web browser)
-im = Image.open(f"{current_dir}/images/favicon.ico")
+im = Image.open(
+    f"{PROJECT_DIR}/afs_mapping_target_families/analysis/streamlit_app/images/favicon.ico"
+)
 st.set_page_config(page_title="2021-2022 ASQ-3 Results", layout="wide", page_icon=im)
 
 # this creates a separate container for us to put the header in
 header = st.container()
 
 with header:
-    nesta_logo = Image.open(f"{current_dir}/images/nesta_logo.png")
+    nesta_logo = Image.open(
+        f"{PROJECT_DIR}/afs_mapping_target_families/analysis/streamlit_app/images/nesta_logo.png"
+    )
     st.image(nesta_logo, width=250)
     # This creates a title and adds some markdown for the second column
     st.title("Results of the 2021-2022 ASQ-3 Survey Across England")
@@ -50,46 +58,48 @@ with header:
 def streamlit_asq():
     # This sets a spinner so we know that the report is updating as we change the user selections.
     with st.spinner("Updating Report..."):
-        # data = get_combined_data()
-        data = pd.read_csv(f"{current_dir}/datasets/2021_2022_compiled.csv")
+        data = get_combined_data()
+        # data = pd.read_csv("{PROJECT_DIR}/afs_mapping_target_families/analysis/streamlit_app/datasets/2021_2022_compiled.csv")
         # This radio button lets you pick a larger group so you're not overwhelmed by all the possible categories
-        major_grouping_column_data = st.radio(
-            "Pick a metric to visualise",
-            [
-                "Response Rate",
-                "% Positive Responses - Overall",
-                "% Positive Responses - Communication Skills",
-                "% Positive Responses - Gross Motor Skills",
-                "% Positive Responses - Fine Motor Skills",
-                "% Positive Responses - Problem Solving Skills",
-                "% Positive Responses - Personal/Social Skills",
-            ],
-        )
+        with st.sidebar:
 
-        COLUMN_NAME_MAPPINGS = {
-            "Response Rate": "response_rate",
-            "% Positive Responses - Overall": "p_above_avg_overall",
-            "% Positive Responses - Communication Skills": "p_above_avg_comms",
-            "% Positive Responses - Gross Motor Skills": "p_above_avg_gms",
-            "% Positive Responses - Fine Motor Skills": "p_above_avg_fms",
-            "% Positive Responses - Problem Solving Skills": "p_above_avg_problem_solving",
-            "% Positive Responses - Personal/Social Skills": "p_above_avg_personal_social",
-        }
+            major_grouping_column_data = st.radio(
+                "Pick a metric to visualise",
+                [
+                    "Response Rate",
+                    "% Positive Responses - Overall",
+                    "% Positive Responses - Communication Skills",
+                    "% Positive Responses - Gross Motor Skills",
+                    "% Positive Responses - Fine Motor Skills",
+                    "% Positive Responses - Problem Solving Skills",
+                    "% Positive Responses - Personal/Social Skills",
+                ],
+            )
 
-        column_selection_actual_column_name = COLUMN_NAME_MAPPINGS[
-            major_grouping_column_data
-        ]
+            COLUMN_NAME_MAPPINGS = {
+                "Response Rate": "response_rate",
+                "% Positive Responses - Overall": "p_above_avg_overall",
+                "% Positive Responses - Communication Skills": "p_above_avg_comms",
+                "% Positive Responses - Gross Motor Skills": "p_above_avg_gms",
+                "% Positive Responses - Fine Motor Skills": "p_above_avg_fms",
+                "% Positive Responses - Problem Solving Skills": "p_above_avg_problem_solving",
+                "% Positive Responses - Personal/Social Skills": "p_above_avg_personal_social",
+            }
 
-        date_filter = data["date"].unique()
-        date_selections = st.radio("Choose Quarters", date_filter)
-        ## Alternative if you want multiple quarters
-        # date_selections = st.multiselect("Choose Quarters", date_filter, "April 2021 - June 2021")
+            column_selection_actual_column_name = COLUMN_NAME_MAPPINGS[
+                major_grouping_column_data
+            ]
+            date_filter = data["date"].unique()
+            np.append(date_filter, "All")
+            date_selections = st.radio("Choose Quarters", date_filter)
+            ## Alternative if you want multiple quarters
+            # date_selections = st.multiselect("Choose Quarters", date_filter, "April 2021 - June 2021")
 
-        # This lets you select multiple regions. So you can choose North and Mid Wales for example at the same time.
-        region_filter = data["Region"].unique()
-        region_selections = st.multiselect(
-            "Choose Region, leave blank to view all of England", region_filter
-        )
+            # This lets you select multiple regions. So you can choose North and Mid Wales for example at the same time.
+            region_filter = data["Region"].unique()
+            region_selections = st.multiselect(
+                "Choose Region, leave blank to view all of England", region_filter
+            )
 
         # We still want the map to plot, so if they haven't chosen a region selection, we want the lsoas_to_plot dataframe to be just all LSOAs.
         if len(region_selections) != 0:
@@ -133,6 +143,7 @@ def streamlit_asq():
 
         encoding_type = ":Q"
         specified_feature_to_plot = column_selection_actual_column_name + encoding_type
+        # value_to_plot = mean("datum." + specified_feature_to_plot)
 
         # This is an alternative condition that I've set up so it plots the C/UAs where there is no value. Earlier on I set the C/UAs which didn't have data to be -100,
         # so anything that is above 0 we want it to plot normally (i.e. with a colour scale), but if it's got no value, we want it to be a light grey. This sets up the query for later
@@ -204,7 +215,10 @@ def streamlit_asq():
         st.altair_chart(map)
 
 
+streamlit_asq()
+"""
 # This adds on the password protection
+
 pwd = st.sidebar.text_input("Password:", type="password")
 # st.secrets reads it in from the toml folder, and then runs the streamlit_asq function if the password matches.
 if pwd == st.secrets["PASSWORD"]:
@@ -213,3 +227,4 @@ elif pwd == "":
     pass
 else:
     st.error("Password incorrect. Please try again.")
+"""
