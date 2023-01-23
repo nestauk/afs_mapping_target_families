@@ -17,7 +17,7 @@ We also add an additional row for each county and unitary authority with the dat
 ## Estimating Response Rates
 
 Response rates are estimated using population estimates from the Census 2021 data. The response rate is calculated as:
-${total number of students who answered all 5 categories over the year} \over {Total number of 1 year olds when the census was conducted in March 2021}}}$.
+${total number of students who answered all 5 categories over the year} \over {Total number of 1 year olds when the census was conducted in March 2021}$.
 
 ## Including Percent of Students Reaching Good Level of Development at Age 5
 
