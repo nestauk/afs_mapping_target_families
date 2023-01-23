@@ -6,6 +6,7 @@ from afs_mapping_target_families.getters.raw.asq import (
     get_q4_21_22,
 )
 from afs_mapping_target_families.getters.raw.population_estimates import get_pop_age_1
+from afs_mapping_target_families.getters.raw.eyfsp import get_la_gld
 from afs_mapping_target_families.utils.data_prep.asq_response_rates import (
     get_response_rate,
 )
@@ -64,26 +65,43 @@ if __name__ == "__main__":
     ) as f:
         column_map = json.load(f)
     yearly_df = yearly_df.rename(columns=column_map)
-    # yearly_df = yearly_df.replace(to_replace = "DK", value = 0)
-    # yearly_df = yearly_df.replace(to_replace = "dk", value = 0)
-    # yearly_df = yearly_df.replace(to_replace = "-", value = 0)
+    yearly_df = yearly_df.rename(columns={"Area": "la_name"})
 
     # add a column to indicate the response rate of a given LA
     # response rate is calculated for the entire year based on census population estimates
     pop_data = get_pop_age_1()
-    pop_data["Upper Tier Local Authorities"] = pop_data[
-        "Upper Tier Local Authorities"
-    ].str.replace("[^\w\s]", " ")
-    las = yearly_df.Area.unique()
+    pop_data["Upper Tier Local Authorities"] = (
+        pop_data["Upper Tier Local Authorities"]
+        .str.replace("-", " ")
+        .str.replace(".", "")
+    )
+    las = yearly_df.la_name.unique()
     yearly_df["response_rate"] = float
+
+    # add in eyfsp gld percentage for the annual data
+    yearly_df["eyfsp_score"] = None
+    eyfsp_data = get_la_gld()
+    eyfsp_data["la_name"] = (
+        eyfsp_data["la_name"].str.replace("-", " ").str.replace(".", "")
+    )
+    eyfsp_data["la_name"] = eyfsp_data["la_name"].str.replace(
+        "Bristol, City of", "Bristol"
+    )
+    eyfsp_data["la_name"] = eyfsp_data["la_name"].str.replace(
+        "Kingston upon Hull, City of", "Kingston upon Hull"
+    )
+    eyfsp_data["la_name"] = eyfsp_data["la_name"].str.replace(
+        "Herefordshire, County of", "Herefordshire"
+    )
+
     for la in las:
-        la_data = yearly_df.loc[yearly_df["Area"] == la]
+        la_data = yearly_df.loc[yearly_df["la_name"] == la]
 
         response_rate = get_response_rate(
-            yearly_df[yearly_df["Area"] == la],
+            yearly_df[yearly_df["la_name"] == la],
             pop_data[pop_data["Upper Tier Local Authorities"] == la],
         )
-        yearly_df.loc[yearly_df["Area"] == la, "response_rate"] = response_rate
+        yearly_df.loc[yearly_df["la_name"] == la, "response_rate"] = response_rate
 
         region = list(la_data["Region"])[0]
         ons_code = list(la_data["ONS code"])[0]
@@ -114,6 +132,12 @@ if __name__ == "__main__":
         n_above_avg_overall = get_annual_totals(la_data["n_above_avg_overall"])
         p_above_avg_overall = get_annual_avg(n_above_avg_overall, total_overall)
         date = "Annual"
+        try:
+            eyfsp_score = eyfsp_data.loc[eyfsp_data["la_name"] == la][
+                "gld_percentage"
+            ].values[0]
+        except:
+            eyfsp_score = None
 
         row = [
             la,
@@ -139,6 +163,7 @@ if __name__ == "__main__":
             p_above_avg_overall,
             date,
             response_rate,
+            eyfsp_score,
         ]
         yearly_df.loc[len(yearly_df)] = row
     # save compiled data to S3
