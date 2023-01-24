@@ -78,10 +78,10 @@ def streamlit_asq():
         with st.container():
             col1, col2 = st.columns(2, gap="large")
             with col1:
-                st.subheader("Map of ASQ in England")
+                st.subheader("Distribution of ASQ across England")
 
                 major_grouping_column_data = st.selectbox(
-                    "Pick a metric to view on the map",
+                    "Pick a metric to view on the map and filter the ASQ bars chart",
                     [
                         "Response Rate",
                         "% Positive Responses - All Categories",
@@ -171,78 +171,164 @@ def streamlit_asq():
                 alternative_condition = (
                     "datum." + column_selection_actual_column_name + " > 0"
                 )
-                map = (
-                    alt.Chart(regions)
-                    .configure(padding={"left": 3, "top": 0, "right": 5, "bottom": 0})
-                    .mark_geoshape(stroke="white")
-                    .transform_lookup(
-                        # We want the CTYUA21CD field to be the linking column in the regions data.
-                        lookup="properties.CTYUA21CD",
-                        # And we want to combine it with the data, using the "ONS code" field to link it, and then we want to bring across a number of columns from the WIMD dataset.
-                        from_=alt.LookupData(
-                            map_data,
-                            "ONS code",
-                            [
-                                column_selection_actual_column_name,
-                                "Area",
-                                "Region",
-                                "date",
-                                "response_rate",
-                            ],
-                        ),
-                        # We then can filter the data if you only want to have a selection of LSOAs.
-                    )
-                    .transform_filter(
-                        alt.FieldOneOfPredicate(
-                            field="properties.CTYUA21CD", oneOf=cuas_to_plot
-                        )
-                    )
-                    .encode(
-                        # As with normal altair functions, we can add a tooltip using any column in the topojson file or one of the columns we've brought across from the other data.
-                        tooltip=[
-                            alt.Tooltip(
-                                specified_feature_to_plot,
-                                title=major_grouping_column_data,
-                                format=".2f",
-                            ),
-                            alt.Tooltip("Area:N", title="Area"),
-                            alt.Tooltip("Region:N", title="Region"),
-                            alt.Tooltip(
-                                "date:N",
-                                title="Date",
-                            ),
-                            alt.Tooltip(
-                                "response_rate:N",
-                                title="Response Rate (%)",
-                                format=".2f",
-                            ),
-                        ],
-                        # We've used alt.condition so altair knows to plot every C/UAs that's not got a value as "lightgrey", we set the condition as < 0 as
-                        # we filled the "DK", "-" and "Could Not Calculate Response Rate" as -100. Without this line, it would only
-                        # plot the C/UAs that have a value so there would be lots of boundaries missing.
-                        color=alt.condition(
-                            alternative_condition,
-                            alt.Color(
-                                specified_feature_to_plot,
-                                legend=alt.Legend(
-                                    direction="vertical",
-                                    legendX=-1,
-                                    orient="left",
-                                    gradientLength=500,
-                                    title=None,
-                                ),
-                                scale=alt.Scale(
-                                    scheme="yellowgreenblue", domain=[0, 100]
-                                ),
-                            ),
-                            alt.value("lightgrey"),
-                        ),
-                    )
-                    .properties(width=600, height=500)
-                    .configure_view(strokeWidth=0)
-                )
 
-                st.altair_chart(map)
+                data_for_barchart = data.copy()
+                # only have eyfsp scores annually
+                data_for_barchart = data_for_barchart[
+                    data_for_barchart["date"] == date_selections
+                ]
+
+                data_for_barchart["eyfsp_score"] = data_for_barchart[
+                    "eyfsp_score"
+                ].apply(lambda x: x / 100)
+
+                if column_selection_actual_column_name == "response_rate":
+                    data_for_barchart = data_for_barchart.loc[
+                        data_for_barchart[column_selection_actual_column_name]
+                        != "Could Not Calculate Response Rate"
+                    ]
+
+                else:
+                    data_for_barchart = data_for_barchart.loc[
+                        data_for_barchart[column_selection_actual_column_name]
+                        != "Could not compute"
+                    ]
+
+                tab1, tab2 = st.tabs(["Map", "Bar"])
+
+                with tab1:
+                    header = "Map"
+                    map = (
+                        alt.Chart(regions)
+                        .configure(
+                            padding={"left": 3, "top": 0, "right": 5, "bottom": 0}
+                        )
+                        .mark_geoshape(stroke="white")
+                        .transform_lookup(
+                            # We want the CTYUA21CD field to be the linking column in the regions data.
+                            lookup="properties.CTYUA21CD",
+                            # And we want to combine it with the data, using the "ONS code" field to link it, and then we want to bring across a number of columns from the WIMD dataset.
+                            from_=alt.LookupData(
+                                map_data,
+                                "ONS code",
+                                [
+                                    column_selection_actual_column_name,
+                                    "la_name",
+                                    "Region",
+                                    "date",
+                                    "response_rate",
+                                ],
+                            ),
+                            # We then can filter the data if you only want to have a selection of LSOAs.
+                        )
+                        .transform_filter(
+                            alt.FieldOneOfPredicate(
+                                field="properties.CTYUA21CD", oneOf=cuas_to_plot
+                            )
+                        )
+                        .encode(
+                            # As with normal altair functions, we can add a tooltip using any column in the topojson file or one of the columns we've brought across from the other data.
+                            tooltip=[
+                                alt.Tooltip(
+                                    specified_feature_to_plot,
+                                    title=major_grouping_column_data,
+                                    format=".2f",
+                                ),
+                                alt.Tooltip("la_name:N", title="Local Authority"),
+                                alt.Tooltip("Region:N", title="Region"),
+                                alt.Tooltip(
+                                    "date:N",
+                                    title="Date",
+                                ),
+                                alt.Tooltip(
+                                    "response_rate:N",
+                                    title="Response Rate (%)",
+                                    format=".2f",
+                                ),
+                            ],
+                            # We've used alt.condition so altair knows to plot every C/UAs that's not got a value as "lightgrey", we set the condition as < 0 as
+                            # we filled the "DK", "-" and "Could Not Calculate Response Rate" as -100. Without this line, it would only
+                            # plot the C/UAs that have a value so there would be lots of boundaries missing.
+                            color=alt.condition(
+                                alternative_condition,
+                                alt.Color(
+                                    specified_feature_to_plot,
+                                    legend=alt.Legend(
+                                        direction="vertical",
+                                        legendX=-1,
+                                        orient="left",
+                                        gradientLength=500,
+                                        title=None,
+                                    ),
+                                    scale=alt.Scale(
+                                        scheme="yellowgreenblue", domain=[0, 100]
+                                    ),
+                                ),
+                                alt.value("lightgrey"),
+                            ),
+                        )
+                        .properties(width=600, height=500)
+                        .configure_view(strokeWidth=0)
+                    )
+
+                    st.altair_chart(map)
+                with tab2:
+                    header = "Bar"
+                    bar_sort_order = list(
+                        data_for_barchart.sort_values(
+                            by=column_selection_actual_column_name, ascending=False
+                        )["la_name"]
+                    )
+
+                    base = (
+                        alt.Chart(data_for_barchart)
+                        .transform_filter(
+                            alt.FieldOneOfPredicate(
+                                field="ONS code", oneOf=cuas_to_plot
+                            )
+                        )
+                        .encode(alt.Y("la_name:N", sort=bar_sort_order, title=None))
+                    )
+
+                    asq_chart = (
+                        base.mark_bar()
+                        .encode(
+                            alt.Y("la_name:N", sort=bar_sort_order, title=None),
+                            alt.X(specified_feature_to_plot),
+                            tooltip=[
+                                alt.Tooltip("la_name:N", title="Local Authority"),
+                                alt.Tooltip(specified_feature_to_plot, title="ASQ"),
+                            ],
+                        )
+                        .properties(width=600)
+                    )
+
+                    eyfsp_chart = (
+                        base.mark_tick(
+                            color="red",
+                            thickness=4,
+                        )
+                        .encode(
+                            alt.Y("la_name:N", sort=bar_sort_order, title=None),
+                            alt.X(
+                                "eyfsp_score:Q",
+                                title="Fraction of Students Above Average (%)",
+                            ),
+                            tooltip=[
+                                alt.Tooltip("la_name:N", title="Local Authority"),
+                                alt.Tooltip("eyfsp_score:Q", title="EYFSP"),
+                            ],
+                        )
+                        .properties(width=600)
+                    )
+
+                    bar_chart = (
+                        alt.layer(asq_chart, eyfsp_chart)
+                        .resolve_scale()
+                        .configure_axis(labelLimit=0)
+                    )
+
+                    st.altair_chart(bar_chart)
 
             with col2:
                 st.subheader("Distribution of ASQ Scores by Category")
@@ -263,7 +349,7 @@ def streamlit_asq():
                     pd.DataFrame(
                         data_for_boxplot[
                             [
-                                "Area",
+                                "la_name",
                                 "Region",
                                 "ONS code",
                                 "date",
@@ -275,7 +361,7 @@ def streamlit_asq():
                                 "All Categories",
                             ]
                         ]
-                        .set_index(["Area", "Region", "ONS code", "date"])
+                        .set_index(["la_name", "Region", "ONS code", "date"])
                         .stack()
                     )
                     .reset_index()
@@ -316,7 +402,7 @@ def streamlit_asq():
                         ),
                         y=alt.Y("category:N", title=None),
                         tooltip=[
-                            alt.Tooltip("Area:N"),
+                            alt.Tooltip("la_name:N"),
                             alt.Tooltip("date:N"),
                             alt.Tooltip("percent_above_avg:Q", title="% Above Average"),
                         ],
