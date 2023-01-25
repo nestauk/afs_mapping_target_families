@@ -27,9 +27,7 @@ alt.themes.enable("nestafont")
 colours = app_utils.NESTA_COLOURS
 
 # here we load the favicon and we set the page config (so what appears in the tab on your web browser)
-im = Image.open(
-   f"{current_dir}/images/favicon.ico"
-)
+im = Image.open(f"{current_dir}/images/favicon.ico")
 st.set_page_config(page_title="2021-2022 ASQ-3 Results", layout="wide", page_icon=im)
 
 # this creates a separate container for us to put the header in
@@ -41,17 +39,13 @@ def streamlit_asq():
     with st.spinner("Updating Report..."):
         # data = get_combined_data()
         # FOR NOW, LOAD DATA LOCALLY UNTIL FIGURE OUT A WAY TO CONNECT CLOUD TO AWS
-        data = pd.read_csv(
-            f"{current_dir}/datasets/DATA.csv"
-        )
+        data = pd.read_csv(f"{current_dir}/datasets/DATA.csv")
         click = alt.selection_multi(fields=["ONS code"])
         # data = pd.read_csv("{PROJECT_DIR}/afs_mapping_target_families/analysis/streamlit_app/datasets/2021_2022_compiled.csv")
         # This radio button lets you pick a larger group so you're not overwhelmed by all the possible categories
         header = st.container()
         with header:
-            nesta_logo = Image.open(
-                f"{current_dir}/images/nesta_logo.png"
-            )
+            nesta_logo = Image.open(f"{current_dir}/images/nesta_logo.png")
             st.title("Results of the 2021-2022 ASQ-3 Survey Across England")
             col1, col2 = st.columns([1, 10])
             with col1:
@@ -270,7 +264,7 @@ def streamlit_asq():
                                     alt.value("lightgrey"),
                                 ),
                             )
-                            .properties(width=600, height=500)
+                            .properties(width=400, height=500)
                             .configure_view(strokeWidth=0)
                         )
 
@@ -309,7 +303,7 @@ def streamlit_asq():
                                     ),
                                 ],
                             )
-                            .properties(width=800)
+                            .properties(width=400)
                         )
 
                         eyfsp_chart = (
@@ -331,7 +325,7 @@ def streamlit_asq():
                                     ),
                                 ],
                             )
-                            .properties(width=800)
+                            .properties(width=400)
                         )
 
                         bar_chart = (
@@ -417,7 +411,7 @@ def streamlit_asq():
                             color=alt.value("#0000FF"),
                             stroke=alt.value("white"),
                         )
-                        .properties(width=800, height=800)
+                        .properties(width=400, height=400)
                     )
 
                     st.altair_chart(boxplot)
