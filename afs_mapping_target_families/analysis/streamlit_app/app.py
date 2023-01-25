@@ -6,9 +6,10 @@ import altair as alt
 import utils
 from PIL import Image
 from itertools import chain
-from afs_mapping_target_families.getters.processed.combined_data import (
-    get_combined_data,
-)
+
+# from afs_mapping_target_families.getters.processed.combined_data import (
+#    get_combined_data,
+# )
 import os
 from afs_mapping_target_families import PROJECT_DIR
 from statistics import mean
