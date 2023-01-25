@@ -264,7 +264,7 @@ def streamlit_asq():
                                     alt.value("lightgrey"),
                                 ),
                             )
-                            .properties(width=400, height=500)
+                            .properties(width=500, height=600)
                             .configure_view(strokeWidth=0)
                         )
 
@@ -303,7 +303,7 @@ def streamlit_asq():
                                     ),
                                 ],
                             )
-                            .properties(width=400)
+                            .properties(width=600)
                         )
 
                         eyfsp_chart = (
@@ -325,7 +325,7 @@ def streamlit_asq():
                                     ),
                                 ],
                             )
-                            .properties(width=400)
+                            .properties(width=600)
                         )
 
                         bar_chart = (
@@ -411,7 +411,7 @@ def streamlit_asq():
                             color=alt.value("#0000FF"),
                             stroke=alt.value("white"),
                         )
-                        .properties(width=400, height=400)
+                        .properties(width=600, height=600)
                     )
 
                     st.altair_chart(boxplot)
