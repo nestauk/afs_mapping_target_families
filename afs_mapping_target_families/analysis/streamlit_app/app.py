@@ -63,7 +63,7 @@ def streamlit_asq():
         with tab1:
             with st.container():
                 # st.header("Select Date Range and Region to Filter Plots")
-                col1, col2 = st.columns(2, gap="large")
+                col1, col2, col3 = st.columns(3, gap="large")
                 with col1:
                     date_filter = data["date"].unique()
                     date_selections = st.selectbox(
@@ -78,6 +78,11 @@ def streamlit_asq():
                     region_selections = st.multiselect(
                         "Choose Region, leave blank to view all of England",
                         region_filter,
+                    )
+
+                with col3:
+                    response_rate_filter = st.slider(
+                        "Choose a minimum response rate", min_value=0
                     )
             with st.container():
                 col1, col2 = st.columns(2, gap="large")
@@ -111,13 +116,39 @@ def streamlit_asq():
                         major_grouping_column_data
                     ]
 
-                    # We still want the map to plot, so if they haven't chosen a region selection, we want the lsoas_to_plot dataframe to be just all LSOAs.
-                    if len(region_selections) != 0:
-                        cuas_to_plot = list(
-                            data[data["Region"].isin(region_selections)]["ONS code"]
+                    for col in COLUMN_NAME_MAPPINGS.values():
+                        data[col] = (
+                            data[col]
+                            .replace(
+                                {
+                                    "-": -0.01,
+                                    "DK": -0.01,
+                                    "dk": -0.01,
+                                    "Could not compute": -0.01,
+                                    "Could Not Calculate Response Rate": -0.01,
+                                }
+                            )
+                            .astype("float64")
+                            * 100
                         )
-                    else:
-                        cuas_to_plot = data["ONS code"].unique()
+
+                    # filter cuas to only include those with response rate within the specified range
+                    cuas_to_plot = list(
+                        data.loc[(data["response_rate"] >= response_rate_filter)][
+                            "ONS code"
+                        ]
+                    )
+
+                    # if using the region filter, filter the cuas to only be those within the specific region
+                    if len(region_selections) != 0:
+                        cuas_to_plot = [
+                            cua
+                            for cua in cuas_to_plot
+                            if cua
+                            in list(
+                                data[data["Region"].isin(region_selections)]["ONS code"]
+                            )
+                        ]
 
                     geojson_url = "https://raw.githubusercontent.com/VolcanoBlue13/uk_geojson_topojson_datasets/main/geojson/UK/County_Unitary_Authority/C_UA_UK_2021_boundaries_ultra_generalised.geojson"
                     regions = alt.Data(
@@ -127,35 +158,11 @@ def streamlit_asq():
 
                     map_data = data.copy()
                     ## Replace missing values with a -1
-                    map_data[column_selection_actual_column_name] = map_data[
-                        column_selection_actual_column_name
-                    ].replace(
-                        {
-                            "-": -1,
-                            "DK": -1,
-                            "Could Not Calculate Response Rate": -1,
-                            "Could not compute": -1,
-                        }
-                    )
+
                     ## Filter the data to the date selection
                     map_data = map_data[map_data["date"] == date_selections]
                     ## Convert the column to a float64 so it will plot correctly
-                    map_data[column_selection_actual_column_name] = map_data[
-                        column_selection_actual_column_name
-                    ].astype("float64")
-                    ## Convert the column selected to a percentage
-                    map_data[column_selection_actual_column_name] = (
-                        map_data[column_selection_actual_column_name] * 100
-                    )
-                    ## If the column selected isn't the response rate, convert the response rate column to a float64 and a percentage.
-                    if column_selection_actual_column_name != "response_rate":
-                        map_data["response_rate"] = map_data["response_rate"].replace(
-                            {"Could Not Calculate Response Rate": -1}
-                        )
-                        map_data["response_rate"] = map_data["response_rate"].astype(
-                            "float64"
-                        )
-                        map_data["response_rate"] = map_data["response_rate"] * 100
+
                     ## If you wanted to group the date selections (i.e. select multiple dates), you'll need this bit of code below.
                     # if len(date_selections) != 0:
                     # map_data = map_data[map_data["dates"].isin(date_selections)]
@@ -182,21 +189,9 @@ def streamlit_asq():
                         data_for_barchart["date"] == date_selections
                     ]
 
-                    data_for_barchart["eyfsp_score"] = data_for_barchart[
-                        "eyfsp_score"
-                    ].apply(lambda x: x / 100)
-
-                    if column_selection_actual_column_name == "response_rate":
-                        data_for_barchart = data_for_barchart.loc[
-                            data_for_barchart[column_selection_actual_column_name]
-                            != "Could Not Calculate Response Rate"
-                        ]
-
-                    else:
-                        data_for_barchart = data_for_barchart.loc[
-                            data_for_barchart[column_selection_actual_column_name]
-                            != "Could not compute"
-                        ]
+                    data_for_barchart = data_for_barchart.loc[
+                        data_for_barchart[column_selection_actual_column_name] != -1
+                    ]
 
                     tab3, tab4 = st.tabs(["Map", "Bar"])
 
@@ -265,7 +260,7 @@ def streamlit_asq():
                                             title=None,
                                         ),
                                         scale=alt.Scale(
-                                            scheme="yellowgreenblue", domain=[0, 100]
+                                            scheme="redyellowblue", domain=[30, 100]
                                         ),
                                     ),
                                     alt.value("lightgrey"),
@@ -278,6 +273,9 @@ def streamlit_asq():
                         st.altair_chart(map)
                     with tab4:
                         header = "Bar"
+                        st.markdown(
+                            "The red line indicates the Percent of Students with a Good Level of Development on the EYFSP"
+                        )
                         bar_sort_order = list(
                             data_for_barchart.sort_values(
                                 by=column_selection_actual_column_name, ascending=False
@@ -301,10 +299,13 @@ def streamlit_asq():
                                 alt.X(specified_feature_to_plot),
                                 tooltip=[
                                     alt.Tooltip("la_name:N", title="Local Authority"),
-                                    alt.Tooltip(specified_feature_to_plot, title="ASQ"),
+                                    alt.Tooltip(
+                                        specified_feature_to_plot,
+                                        title=specified_feature_to_plot,
+                                    ),
                                 ],
                             )
-                            .properties(width=600)
+                            .properties(width=800)
                         )
 
                         eyfsp_chart = (
@@ -326,7 +327,7 @@ def streamlit_asq():
                                     ),
                                 ],
                             )
-                            .properties(width=600)
+                            .properties(width=800)
                         )
 
                         bar_chart = (
@@ -376,24 +377,16 @@ def streamlit_asq():
                     )
 
                     data_for_boxplot = data_for_boxplot.loc[
-                        (data_for_boxplot["percent_above_avg"] != "-")
-                        & (data_for_boxplot["percent_above_avg"] != "Could not compute")
+                        (data_for_boxplot["percent_above_avg"] != -1)
                     ]
                     data_for_boxplot["percent_above_avg"] = round(
-                        data_for_boxplot["percent_above_avg"].astype("float64") * 100, 2
+                        data_for_boxplot["percent_above_avg"], 2
                     )
                     # data_for_boxplot['category'] = data_for_boxplot['category'].apply(wrap)
 
                     data_for_boxplot = data_for_boxplot[
                         data_for_boxplot["date"] == date_selections
                     ]
-
-                    if len(region_selections) != 0:
-                        cuas_to_plot = list(
-                            data[data["Region"].isin(region_selections)]["ONS code"]
-                        )
-                    else:
-                        cuas_to_plot = data["ONS code"].unique()
 
                     boxplot = (
                         alt.Chart(data_for_boxplot)
@@ -420,7 +413,7 @@ def streamlit_asq():
                             color=alt.value("#0000FF"),
                             stroke=alt.value("white"),
                         )
-                        .properties(width=550, height=600)
+                        .properties(width=800, height=800)
                     )
 
                     st.altair_chart(boxplot)
