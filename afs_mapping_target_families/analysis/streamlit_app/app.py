@@ -39,7 +39,11 @@ def streamlit_asq():
 
     # This sets a spinner so we know that the report is updating as we change the user selections.
     with st.spinner("Updating Report..."):
-        data = get_combined_data()
+        # data = get_combined_data()
+        # FOR NOW, LOAD DATA LOCALLY UNTIL FIGURE OUT A WAY TO CONNECT CLOUD TO AWS
+        data = pd.read_csv(
+            f"{PROJECT_DIR}/afs_mapping_target_families/analysis/streamlit_app/datasets/DATA.csv"
+        )
         click = alt.selection_multi(fields=["ONS code"])
         # data = pd.read_csv("{PROJECT_DIR}/afs_mapping_target_families/analysis/streamlit_app/datasets/2021_2022_compiled.csv")
         # This radio button lets you pick a larger group so you're not overwhelmed by all the possible categories
