@@ -3,6 +3,3 @@ pandas
 openpyxl
 altair
 numpy
-#NOT NEEDED FOR RUNNING APP
-#nesta_ds_utils @ git+https://github.com/nestauk/nesta_ds_utils.git
-#streamlit==1.16.0
