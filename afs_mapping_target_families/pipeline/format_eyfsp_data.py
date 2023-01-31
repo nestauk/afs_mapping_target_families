@@ -1,6 +1,5 @@
 from nesta_ds_utils.loading_saving.S3 import upload_obj
 from afs_mapping_target_families import BUCKET_NAME
-from afs_mapping_target_families.getters.raw.eyfsp import get_la_eyfsp
 
 if __name__ == "__main__":
     eyfsp_data = get_la_eyfsp()

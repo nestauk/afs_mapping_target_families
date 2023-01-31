@@ -40,13 +40,12 @@ def streamlit_asq():
         # data = get_combined_data()
         # FOR NOW, LOAD DATA LOCALLY UNTIL FIGURE OUT A WAY TO CONNECT CLOUD TO AWS
         data = pd.read_csv(f"{current_dir}/datasets/DATA.csv")
-        click = alt.selection_multi(fields=["ONS code"])
         # data = pd.read_csv("{PROJECT_DIR}/afs_mapping_target_families/analysis/streamlit_app/datasets/2021_2022_compiled.csv")
         # This radio button lets you pick a larger group so you're not overwhelmed by all the possible categories
         header = st.container()
         with header:
             nesta_logo = Image.open(f"{current_dir}/images/nesta_logo.png")
-            st.title("Results of the 2021-2022 ASQ-3 Survey Across England")
+            st.title("Early Years Child Development Outcomes Across England")
             col1, col2 = st.columns([1, 10])
             with col1:
                 st.image(nesta_logo, width=100)
@@ -57,8 +56,9 @@ def streamlit_asq():
             st.markdown(
                 "**This dashboard is a under active development and plots and metrics should not be interpreted as final**"
             )
-        tab1, tab2 = st.tabs(["Dashboard", "About the Data"])
+        tab1, tab2, tab3 = st.tabs(["Age 2", "Age 5", "About the Data"])
         with tab1:
+            st.title("Outcomes Measured by the Ages and Stages Questionnaire")
             with st.container():
                 # st.header("Select Date Range and Region to Filter Plots")
                 col1, col2, col3 = st.columns(3, gap="large")
@@ -85,7 +85,7 @@ def streamlit_asq():
             with st.container():
                 col1, col2 = st.columns(2, gap="large")
                 with col1:
-                    st.subheader("Distribution of ASQ across England")
+                    st.subheader("ASQ Results across England")
 
                     major_grouping_column_data = st.selectbox(
                         "Pick a metric to view on the map and filter the ASQ bars chart",
@@ -191,9 +191,9 @@ def streamlit_asq():
                         data_for_barchart[column_selection_actual_column_name] != -1
                     ]
 
-                    tab3, tab4 = st.tabs(["Map", "Bar"])
+                    tab4, tab5 = st.tabs(["Map", "Bar"])
 
-                    with tab3:
+                    with tab4:
                         header = "Map"
                         map = (
                             alt.Chart(regions)
@@ -269,7 +269,7 @@ def streamlit_asq():
                         )
 
                         st.altair_chart(map)
-                    with tab4:
+                    with tab5:
                         header = "Bar"
                         st.markdown(
                             "The red line indicates the Percent of Students with a Good Level of Development on the EYFSP"
@@ -416,6 +416,238 @@ def streamlit_asq():
 
                     st.altair_chart(boxplot)
         with tab2:
+            st.title("Outcomes Measured by the Early Years Foundation Stage Profile")
+            eyfsp_data = pd.read_csv(f"{current_dir}/datasets/eyfsp_la_level.csv")
+
+            click = alt.selection_multi(fields=["la_name"])
+
+            col1, col2 = st.columns(2, gap="large")
+            with col1:
+                eyfsp_region_filter = eyfsp_data["region_name"].unique()
+                eyfsp_region_selections = st.multiselect(
+                    "Choose Region, leave blank to view all of England",
+                    eyfsp_region_filter,
+                )
+
+            with col2:
+                eyfsp_major_grouping_column_data = st.selectbox(
+                    "Pick a metric",
+                    [
+                        "Expected Level of Development Across All 7 Areas",
+                        "Expected Level of Development Across 5 Areas (GLD)",
+                        "Expected Level of Development In Communications, Language, and Literature",
+                    ],
+                )
+                EYFSP_COLUMN_NAME_MAPPINGS = {
+                    "Expected Level of Development Across All 7 Areas": "elg_percentage",
+                    "Expected Level of Development Across 5 Areas (GLD)": "gld_percentage",
+                    "Expected Level of Development In Communications, Language, and Literature": "comm_lang_lit_percentage",
+                }
+
+                eyfsp_column_selection_actual_column_name = EYFSP_COLUMN_NAME_MAPPINGS[
+                    eyfsp_major_grouping_column_data
+                ]
+                for col in EYFSP_COLUMN_NAME_MAPPINGS.values():
+                    eyfsp_data[col] = (
+                        eyfsp_data[col]
+                        .replace(
+                            {
+                                "z": -1,
+                            }
+                        )
+                        .astype("float64")
+                    )
+                encoding_type = ":Q"
+                eyfsp_specified_feature_to_plot = (
+                    eyfsp_column_selection_actual_column_name + encoding_type
+                )
+
+                eyfsp_alternative_condition = (
+                    "datum." + eyfsp_column_selection_actual_column_name + " > 0"
+                )
+                eyfsp_cuas_to_plot = list(set(eyfsp_data["new_la_code"]))
+                if len(eyfsp_region_selections) != 0:
+                    eyfsp_cuas_to_plot = [
+                        cua
+                        for cua in eyfsp_cuas_to_plot
+                        if cua
+                        in list(
+                            eyfsp_data[
+                                eyfsp_data["region_name"].isin(eyfsp_region_selections)
+                            ]["new_la_code"]
+                        )
+                    ]
+
+            col4, col5 = st.columns(2, gap="large")
+
+            with col4:
+                st.header("EYFSP Results Across England")
+                eyfsp_map_data = eyfsp_data.copy()
+                eyfsp_map_data = eyfsp_map_data.loc[
+                    (eyfsp_map_data["characteristic"] == "Total")
+                    & (eyfsp_map_data["characteristic_type"] == "Total")
+                    & (eyfsp_map_data["gender"] == "Total")
+                ]
+                tab6, tab7 = st.tabs(["Map", "Bar"])
+                with tab6:
+                    eyfsp_map = (
+                        alt.Chart(regions)
+                        .configure(
+                            padding={"left": 3, "top": 0, "right": 5, "bottom": 0}
+                        )
+                        .mark_geoshape(stroke="white")
+                        .transform_lookup(
+                            # We want the CTYUA21CD field to be the linking column in the regions data.
+                            lookup="properties.CTYUA21CD",
+                            # And we want to combine it with the data, using the "ONS code" field to link it, and then we want to bring across a number of columns from the WIMD dataset.
+                            from_=alt.LookupData(
+                                eyfsp_map_data,
+                                "new_la_code",
+                                [
+                                    eyfsp_column_selection_actual_column_name,
+                                    "la_name",
+                                    "region_name",
+                                ],
+                            ),
+                            # We then can filter the data if you only want to have a selection of LSOAs.
+                        )
+                        .transform_filter(
+                            alt.FieldOneOfPredicate(
+                                field="properties.CTYUA21CD", oneOf=eyfsp_cuas_to_plot
+                            )
+                        )
+                        .add_selection(click)
+                        .encode(
+                            # As with normal altair functions, we can add a tooltip using any column in the topojson file or one of the columns we've brought across from the other data.
+                            tooltip=[
+                                alt.Tooltip(
+                                    eyfsp_specified_feature_to_plot,
+                                    title=eyfsp_major_grouping_column_data,
+                                    format=".2f",
+                                ),
+                                alt.Tooltip("la_name:N", title="Local Authority"),
+                                alt.Tooltip("region_name:N", title="Region"),
+                            ],
+                            # We've used alt.condition so altair knows to plot every C/UAs that's not got a value as "lightgrey", we set the condition as < 0 as
+                            # we filled the "DK", "-" and "Could Not Calculate Response Rate" as -100. Without this line, it would only
+                            # plot the C/UAs that have a value so there would be lots of boundaries missing.
+                            color=alt.condition(
+                                eyfsp_alternative_condition,
+                                alt.Color(
+                                    eyfsp_specified_feature_to_plot,
+                                    legend=alt.Legend(
+                                        direction="vertical",
+                                        legendX=-1,
+                                        orient="left",
+                                        gradientLength=500,
+                                        title=None,
+                                    ),
+                                    scale=alt.Scale(
+                                        scheme="redyellowblue", domain=[50, 75]
+                                    ),
+                                ),
+                                alt.value("lightgrey"),
+                            ),
+                            opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
+                        )
+                        .properties(width=500, height=600)
+                        .configure_view(strokeWidth=0)
+                    )
+
+                    st.altair_chart(eyfsp_map)
+                with tab7:
+                    eyfsp_bar_sort_order = list(
+                        eyfsp_map_data.sort_values(
+                            by=eyfsp_column_selection_actual_column_name,
+                            ascending=False,
+                        )["la_name"]
+                    )
+                    eyfsp_bar = (
+                        (
+                            alt.Chart(eyfsp_map_data)
+                            .mark_bar()
+                            .transform_filter(
+                                alt.FieldOneOfPredicate(
+                                    field="new_la_code", oneOf=eyfsp_cuas_to_plot
+                                )
+                            )
+                            .encode(
+                                alt.Y(
+                                    "la_name:N", sort=eyfsp_bar_sort_order, title=None
+                                ),
+                                alt.X(
+                                    eyfsp_specified_feature_to_plot,
+                                    title=eyfsp_major_grouping_column_data + (" %"),
+                                ),
+                                tooltip=[
+                                    alt.Tooltip("la_name:N", title="Local Authority"),
+                                    alt.Tooltip(
+                                        eyfsp_specified_feature_to_plot,
+                                        title=eyfsp_major_grouping_column_data,
+                                        format=",.2f",
+                                    ),
+                                ],
+                            )
+                            .properties(width=600)
+                        )
+                        .configure_axis(labelLimit=0)
+                        .add_selection(click)
+                        .transform_filter(click)
+                    )
+                    st.altair_chart(eyfsp_bar)
+            with col5:
+                st.header("EYFSP Results by Demographic")
+                data_for_eyfsp_demo = eyfsp_data.copy()
+                data_for_eyfsp_demo = data_for_eyfsp_demo.loc[
+                    (data_for_eyfsp_demo["characteristic"] != "Total")
+                    & (data_for_eyfsp_demo["gender"] == "Total")
+                ]
+
+                demographic_field = st.selectbox(
+                    "Break Down by:", data_for_eyfsp_demo["characteristic"].unique()
+                )
+                data_for_eyfsp_demo = data_for_eyfsp_demo.loc[
+                    data_for_eyfsp_demo["characteristic"] == demographic_field
+                ]
+
+                eyfsp_specified_feature_to_plot_demo = (
+                    "mean("
+                    + eyfsp_column_selection_actual_column_name
+                    + ")"
+                    + encoding_type
+                )
+
+                eyfsp_demo_bar = (
+                    alt.Chart(data_for_eyfsp_demo)
+                    .mark_bar()
+                    .transform_filter(
+                        alt.FieldOneOfPredicate(
+                            field="new_la_code", oneOf=eyfsp_cuas_to_plot
+                        )
+                    )
+                    .encode(
+                        alt.Y(
+                            eyfsp_specified_feature_to_plot_demo,
+                            title=eyfsp_major_grouping_column_data + " (%)",
+                        ),
+                        alt.X("characteristic_type:N", sort="-y", title=None),
+                        tooltip=[
+                            alt.Tooltip(
+                                "characteristic_type:N", title="Demographic Group"
+                            ),
+                            alt.Tooltip(
+                                eyfsp_specified_feature_to_plot_demo,
+                                title=eyfsp_major_grouping_column_data + "(%)",
+                                format=",.2f",
+                            ),
+                        ],
+                    )
+                    .properties(width=600, height=600)
+                    .properties(width=600)
+                ).configure_axis(labelLimit=0, labelOverlap=True)
+                st.altair_chart(eyfsp_demo_bar)
+
+        with tab3:
             st.title("About the Datasets")
             st.header("Datasets")
             st.markdown("The plots on this dashboard rely on three datasets:")
@@ -431,6 +663,7 @@ def streamlit_asq():
 
             st.header("Metrics")
             st.markdown("The following metrics are reported in this dashboard:")
+            st.markdown("### Age 2 Statistics")
             st.markdown(
                 "**Response Rate**: this is the estimated response rate for each county/unitary authority on all five categories of the ASQ. Response rates are estimated using population estimates from the Census 2021 data. The response rate is calculated as the Total number of students who answered all 5 categories over the year / Total number of 1 year olds when the census was conducted in March 2021."
             )
@@ -454,6 +687,22 @@ def streamlit_asq():
             )
             st.markdown(
                 "**EYFSP - Percent of Students Reaching Good Level of Development**: This is the percent of students who reached a good level of development as reported by the EYFSP"
+            )
+
+            st.markdown("### Age 5 Statistics")
+            st.markdown(
+                "**Expected Level of Development Across 7 Areas**: This is the the percentage of children assessed to be at the emerging or expected level in the 17 ELGs across the 7 areas of learning"
+            )
+            st.markdown(
+                "**Expected Level of Development Across 5 Areas (GLD)**: This is the percentage of children with a good level of development. Specifically, they are at the expected level in the 12 ELGs within the 5 areas of learning relating to: communication and language; personal, social and emotional development; physical development; literacy; and mathematics."
+            )
+
+            st.markdown(
+                "**Expected Level of Development In Communications, Language, and Literature**: This is the percentage of children who were at the expected level for the ELGs in the communication and language area of learning and the ELGs in the literacy area of learning."
+            )
+
+            st.markdown(
+                "More information on this dataset can be found [here](https://explore-education-statistics.service.gov.uk/methodology/early-years-foundation-stage-profile-results-methodology) under 'Data Processing'"
             )
 
             st.header("Data Manipulation")
