@@ -409,7 +409,6 @@ def streamlit_asq():
                                 ),
                             ],
                             color=alt.value("#0000FF"),
-                            stroke=alt.value("#9A1BBE"),
                         )
                         .properties(width=600, height=600)
                     )
