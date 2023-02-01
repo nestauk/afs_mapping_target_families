@@ -28,7 +28,9 @@ colours = app_utils.NESTA_COLOURS
 
 # here we load the favicon and we set the page config (so what appears in the tab on your web browser)
 im = Image.open(f"{current_dir}/images/favicon.ico")
-st.set_page_config(page_title="2021-2022 ASQ-3 Results", layout="wide", page_icon=im)
+st.set_page_config(
+    page_title="2021-2022 Early Years Development Outcomes", layout="wide", page_icon=im
+)
 
 # this creates a separate container for us to put the header in
 
