@@ -532,6 +532,7 @@ def streamlit_asq():
                                 eyfsp_column_selection_actual_column_name,
                                 "la_name",
                                 "region_name",
+                                "children_number"
                             ],
                         ),
                         # We then can filter the data if you only want to have a selection of LSOAs.
