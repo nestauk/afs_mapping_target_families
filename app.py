@@ -478,147 +478,129 @@ def streamlit_asq():
                         )
                     ]
 
-            col4, col5 = st.columns(2, gap="large")
+            st.markdown("### EYFSP Results Across England")
+            eyfsp_map_data = eyfsp_data.copy()
 
-            with col4:
-                st.header("EYFSP Results Across England")
-                eyfsp_map_data = eyfsp_data.copy()
+            demographic_filter = eyfsp_map_data["characteristic_type"].unique()
+
+            demographic_selections = st.multiselect(
+                "Filter by a specific demographic group, leave blank to see the total",
+                demographic_filter,
+            )
+
+            if len(demographic_selections) > 0:
+                eyfsp_map_data = eyfsp_map_data.loc[
+                    (
+                        eyfsp_map_data["characteristic_type"].apply(
+                            lambda x: x in (demographic_selections)
+                        )
+                    )
+                    & (eyfsp_map_data["gender"] == "Total")
+                ]
+            else:
                 eyfsp_map_data = eyfsp_map_data.loc[
                     (eyfsp_map_data["characteristic"] == "Total")
                     & (eyfsp_map_data["characteristic_type"] == "Total")
                     & (eyfsp_map_data["gender"] == "Total")
                 ]
-                tab6, tab7 = st.tabs(["Map", "Bar"])
-                with tab6:
-                    eyfsp_map = (
-                        alt.Chart(regions)
-                        .configure(
-                            padding={"left": 3, "top": 0, "right": 5, "bottom": 0}
-                        )
-                        .mark_geoshape(stroke="white")
-                        .transform_lookup(
-                            # We want the CTYUA21CD field to be the linking column in the regions data.
-                            lookup="properties.CTYUA21CD",
-                            # And we want to combine it with the data, using the "ONS code" field to link it, and then we want to bring across a number of columns from the WIMD dataset.
-                            from_=alt.LookupData(
-                                eyfsp_map_data,
-                                "new_la_code",
-                                [
-                                    eyfsp_column_selection_actual_column_name,
-                                    "la_name",
-                                    "region_name",
-                                ],
-                            ),
-                            # We then can filter the data if you only want to have a selection of LSOAs.
-                        )
-                        .transform_filter(
-                            alt.FieldOneOfPredicate(
-                                field="properties.CTYUA21CD", oneOf=eyfsp_cuas_to_plot
-                            )
-                        )
-                        .add_selection(click)
-                        .encode(
-                            # As with normal altair functions, we can add a tooltip using any column in the topojson file or one of the columns we've brought across from the other data.
-                            tooltip=[
-                                alt.Tooltip(
-                                    eyfsp_specified_feature_to_plot,
-                                    title=eyfsp_major_grouping_column_data,
-                                    format=".2f",
-                                ),
-                                alt.Tooltip("la_name:N", title="Local Authority"),
-                                alt.Tooltip("region_name:N", title="Region"),
+
+            col4, col5 = st.columns(2, gap="large")
+            with col4:
+
+                # tab6, tab7 = st.tabs(["Map", "Bar"])
+                # with tab6:
+                eyfsp_map = (
+                    alt.Chart(regions)
+                    .configure(padding={"left": 3, "top": 0, "right": 5, "bottom": 0})
+                    .mark_geoshape(stroke="white")
+                    .transform_lookup(
+                        # We want the CTYUA21CD field to be the linking column in the regions data.
+                        lookup="properties.CTYUA21CD",
+                        # And we want to combine it with the data, using the "ONS code" field to link it, and then we want to bring across a number of columns from the WIMD dataset.
+                        from_=alt.LookupData(
+                            eyfsp_map_data,
+                            "new_la_code",
+                            [
+                                eyfsp_column_selection_actual_column_name,
+                                "la_name",
+                                "region_name",
                             ],
-                            # We've used alt.condition so altair knows to plot every C/UAs that's not got a value as "lightgrey", we set the condition as < 0 as
-                            # we filled the "DK", "-" and "Could Not Calculate Response Rate" as -100. Without this line, it would only
-                            # plot the C/UAs that have a value so there would be lots of boundaries missing.
-                            color=alt.condition(
-                                eyfsp_alternative_condition,
-                                alt.Color(
-                                    eyfsp_specified_feature_to_plot,
-                                    legend=alt.Legend(
-                                        direction="vertical",
-                                        legendX=-1,
-                                        orient="left",
-                                        gradientLength=500,
-                                        title=None,
-                                    ),
-                                    scale=alt.Scale(
-                                        scheme="redyellowblue", domain=[50, 75]
-                                    ),
-                                ),
-                                alt.value("lightgrey"),
+                        ),
+                        # We then can filter the data if you only want to have a selection of LSOAs.
+                    )
+                    .transform_filter(
+                        alt.FieldOneOfPredicate(
+                            field="properties.CTYUA21CD", oneOf=eyfsp_cuas_to_plot
+                        )
+                    )
+                    .add_selection(click)
+                    .encode(
+                        # As with normal altair functions, we can add a tooltip using any column in the topojson file or one of the columns we've brought across from the other data.
+                        tooltip=[
+                            alt.Tooltip(
+                                eyfsp_specified_feature_to_plot,
+                                title=eyfsp_major_grouping_column_data,
+                                format=".2f",
                             ),
-                            opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
-                        )
-                        .properties(width=500, height=600)
-                        .configure_view(strokeWidth=0)
+                            alt.Tooltip("la_name:N", title="Local Authority"),
+                            alt.Tooltip("region_name:N", title="Region"),
+                        ],
+                        # We've used alt.condition so altair knows to plot every C/UAs that's not got a value as "lightgrey", we set the condition as < 0 as
+                        # we filled the "DK", "-" and "Could Not Calculate Response Rate" as -100. Without this line, it would only
+                        # plot the C/UAs that have a value so there would be lots of boundaries missing.
+                        color=alt.condition(
+                            eyfsp_alternative_condition,
+                            alt.Color(
+                                eyfsp_specified_feature_to_plot,
+                                legend=alt.Legend(
+                                    direction="vertical",
+                                    legendX=-1,
+                                    orient="left",
+                                    gradientLength=500,
+                                    title=None,
+                                ),
+                                scale=alt.Scale(scheme="redyellowblue"),
+                            ),
+                            alt.value("lightgrey"),
+                        ),
+                        opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
                     )
+                    .properties(width=500, height=600)
+                    .configure_view(strokeWidth=0)
+                )
 
-                    st.altair_chart(eyfsp_map)
-                with tab7:
-                    eyfsp_bar_sort_order = list(
-                        eyfsp_map_data.sort_values(
-                            by=eyfsp_column_selection_actual_column_name,
-                            ascending=False,
-                        )["la_name"]
-                    )
-                    eyfsp_bar = (
-                        (
-                            alt.Chart(eyfsp_map_data)
-                            .mark_bar()
-                            .transform_filter(
-                                alt.FieldOneOfPredicate(
-                                    field="new_la_code", oneOf=eyfsp_cuas_to_plot
-                                )
-                            )
-                            .encode(
-                                alt.Y(
-                                    "la_name:N", sort=eyfsp_bar_sort_order, title=None
-                                ),
-                                alt.X(
-                                    eyfsp_specified_feature_to_plot,
-                                    title=eyfsp_major_grouping_column_data + (" %"),
-                                ),
-                                tooltip=[
-                                    alt.Tooltip("la_name:N", title="Local Authority"),
-                                    alt.Tooltip(
-                                        eyfsp_specified_feature_to_plot,
-                                        title=eyfsp_major_grouping_column_data,
-                                        format=",.2f",
-                                    ),
-                                ],
-                            )
-                            .properties(width=600)
-                        )
-                        .configure_axis(labelLimit=0)
-                        .add_selection(click)
-                        .transform_filter(click)
-                    )
-                    st.altair_chart(eyfsp_bar)
+                st.altair_chart(eyfsp_map)
+                # with tab7:
             with col5:
-                st.header("EYFSP Results by Demographic")
-                data_for_eyfsp_demo = eyfsp_data.copy()
-                data_for_eyfsp_demo = data_for_eyfsp_demo.loc[
-                    (data_for_eyfsp_demo["characteristic"] != "Total")
-                    & (data_for_eyfsp_demo["gender"] == "Total")
+                eyfsp_data_for_barchart = eyfsp_map_data.copy()
+                eyfsp_data_for_barchart = eyfsp_data_for_barchart.loc[
+                    eyfsp_data_for_barchart[eyfsp_column_selection_actual_column_name]
+                    > -1
+                ]
+                eyfsp_data_for_barchart = eyfsp_data_for_barchart.loc[
+                    eyfsp_data_for_barchart["new_la_code"].apply(
+                        lambda x: x in (eyfsp_cuas_to_plot)
+                    )
                 ]
 
-                demographic_field = st.selectbox(
-                    "Break Down by:", data_for_eyfsp_demo["characteristic"].unique()
+                sort_option = st.radio(
+                    "Show 20 Highest or Lowest Performing LAs:",
+                    ["Highest Performing", "Lowest Performing"],
+                    horizontal=True,
                 )
-                data_for_eyfsp_demo = data_for_eyfsp_demo.loc[
-                    data_for_eyfsp_demo["characteristic"] == demographic_field
-                ]
+                if sort_option == "Highest Performing":
+                    sort_value = "-x"
+                    eyfsp_data_for_barchart = eyfsp_data_for_barchart.sort_values(
+                        by=eyfsp_column_selection_actual_column_name, ascending=False
+                    )[:20]
+                else:
+                    sort_value = "x"
+                    eyfsp_data_for_barchart = eyfsp_data_for_barchart.sort_values(
+                        by=eyfsp_column_selection_actual_column_name, ascending=True
+                    )[:20]
 
-                eyfsp_specified_feature_to_plot_demo = (
-                    "mean("
-                    + eyfsp_column_selection_actual_column_name
-                    + ")"
-                    + encoding_type
-                )
-
-                eyfsp_demo_bar = (
-                    alt.Chart(data_for_eyfsp_demo)
+                eyfsp_bar = (
+                    alt.Chart(eyfsp_data_for_barchart)
                     .mark_bar()
                     .transform_filter(
                         alt.FieldOneOfPredicate(
@@ -626,26 +608,93 @@ def streamlit_asq():
                         )
                     )
                     .encode(
-                        alt.Y(
-                            eyfsp_specified_feature_to_plot_demo,
-                            title=eyfsp_major_grouping_column_data + " (%)",
+                        alt.Y("la_name:N", title=None, sort=sort_value),
+                        alt.X(
+                            eyfsp_specified_feature_to_plot,
+                            title=eyfsp_major_grouping_column_data + (" %"),
                         ),
-                        alt.X("characteristic_type:N", sort="-y", title=None),
                         tooltip=[
+                            alt.Tooltip("la_name:N", title="Local Authority"),
                             alt.Tooltip(
-                                "characteristic_type:N", title="Demographic Group"
-                            ),
-                            alt.Tooltip(
-                                eyfsp_specified_feature_to_plot_demo,
-                                title=eyfsp_major_grouping_column_data + "(%)",
+                                eyfsp_specified_feature_to_plot,
+                                title=eyfsp_major_grouping_column_data,
                                 format=",.2f",
                             ),
                         ],
                     )
-                    .properties(width=600, height=600)
                     .properties(width=600)
-                ).configure_axis(labelLimit=0, labelOverlap=True)
-                st.altair_chart(eyfsp_demo_bar)
+                    .configure_axis(labelLimit=0)
+                    .add_selection(click)
+                    .transform_filter(click)
+                )
+                st.altair_chart(eyfsp_bar)
+            # with col5:
+            st.markdown("### EYFSP Results by Demographic")
+            data_for_eyfsp_demo = eyfsp_data.copy()
+            data_for_eyfsp_demo = data_for_eyfsp_demo.loc[
+                (data_for_eyfsp_demo["characteristic"] != "Total")
+                & (data_for_eyfsp_demo["gender"] == "Total")
+            ]
+            data_for_eyfsp_demo = data_for_eyfsp_demo.loc[
+                data_for_eyfsp_demo[eyfsp_column_selection_actual_column_name] > -1
+            ]
+
+            demographic_field = st.selectbox(
+                "Break Down by:", data_for_eyfsp_demo["characteristic"].unique()
+            )
+            data_for_eyfsp_demo = data_for_eyfsp_demo.loc[
+                data_for_eyfsp_demo["characteristic"] == demographic_field
+            ]
+
+            la_filter = eyfsp_map_data["la_name"].unique()
+
+            la_selections = st.multiselect(
+                "Select specific LAs, leave blank to see the average overall",
+                la_filter,
+            )
+
+            if len(la_selections) > 0:
+                data_for_eyfsp_demo = data_for_eyfsp_demo.loc[
+                    (
+                        data_for_eyfsp_demo["la_name"].apply(
+                            lambda x: x in (la_selections)
+                        )
+                    )
+                ]
+
+            eyfsp_specified_feature_to_plot_demo = (
+                "mean("
+                + eyfsp_column_selection_actual_column_name
+                + ")"
+                + encoding_type
+            )
+
+            eyfsp_demo_bar = (
+                alt.Chart(data_for_eyfsp_demo)
+                .mark_bar()
+                .transform_filter(
+                    alt.FieldOneOfPredicate(
+                        field="new_la_code", oneOf=eyfsp_cuas_to_plot
+                    )
+                )
+                .encode(
+                    alt.Y(
+                        eyfsp_specified_feature_to_plot_demo,
+                        title=eyfsp_major_grouping_column_data + " (%)",
+                    ),
+                    alt.X("characteristic_type:N", sort="-y", title=None),
+                    tooltip=[
+                        alt.Tooltip("characteristic_type:N", title="Demographic Group"),
+                        alt.Tooltip(
+                            eyfsp_specified_feature_to_plot_demo,
+                            title=eyfsp_major_grouping_column_data + "(%)",
+                            format=",.2f",
+                        ),
+                    ],
+                )
+                .properties(width=1200, height=500)
+            ).configure_axis(labelLimit=0, labelAngle=0, labelOverlap=True)
+            st.altair_chart(eyfsp_demo_bar)
 
         with tab3:
             st.title("About the Datasets")
