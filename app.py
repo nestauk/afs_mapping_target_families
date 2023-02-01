@@ -479,13 +479,14 @@ def streamlit_asq():
                         )
                     ]
 
+            st.markdown("-----------")
             st.markdown("### EYFSP Results Across England")
             eyfsp_map_data = eyfsp_data.copy()
 
             demographic_filter = eyfsp_map_data["characteristic_type"].unique()
 
             demographic_selections = st.multiselect(
-                "Filter by a specific demographic group, leave blank to see the total",
+                "Filter by a specific demographic group, leave blank to all children (Note: this filter does not affect the chart EYFSP Results by Demographic)",
                 demographic_filter,
             )
 
