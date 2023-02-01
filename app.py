@@ -434,15 +434,21 @@ def streamlit_asq():
                 eyfsp_major_grouping_column_data = st.selectbox(
                     "Pick a metric",
                     [
-                        "Expected Level of Development Across All 7 Areas",
-                        "Expected Level of Development Across 5 Areas (GLD)",
-                        "Expected Level of Development In Communications, Language, and Literature",
+                        "% Achieving Expected Level of Development Across All 7 Areas",
+                        "Total Children Achieving Expected Level of Development Across All 7 Areas",
+                        "% Achieving Expected Level of Development Across 5 Areas (GLD)",
+                        "Total Children Achieving Expected Level of Development Across 5 Areas (GLD)",
+                        "% Achieving Expected Level of Development In Communications, Language, and Literature",
+                        "Total Children Achieving Expected Level of Development In Communications, Language, and Literature",
                     ],
                 )
                 EYFSP_COLUMN_NAME_MAPPINGS = {
-                    "Expected Level of Development Across All 7 Areas": "elg_percentage",
-                    "Expected Level of Development Across 5 Areas (GLD)": "gld_percentage",
-                    "Expected Level of Development In Communications, Language, and Literature": "comm_lang_lit_percentage",
+                    "% Achieving Expected Level of Development Across All 7 Areas": "elg_percentage",
+                    "Total Children Achieving Expected Level of Development Across All 7 Areas": "elg_number",
+                    "% Achieving Expected Level of Development Across 5 Areas (GLD)": "gld_percentage",
+                    "Total Children Achieving Expected Level of Development Across 5 Areas (GLD)": "gld_number",
+                    "% Achieving Expected Level of Development In Communications, Language, and Literature": "comm_lang_lit_percentage",
+                    "Total Children Achieving Expected Level of Development In Communications, Language, and Literature": "comm_lang_lit_number",
                 }
 
                 eyfsp_column_selection_actual_column_name = EYFSP_COLUMN_NAME_MAPPINGS[
@@ -546,6 +552,7 @@ def streamlit_asq():
                             ),
                             alt.Tooltip("la_name:N", title="Local Authority"),
                             alt.Tooltip("region_name:N", title="Region"),
+                            alt.Tooltip("children_number:Q", title="Population Size"),
                         ],
                         # We've used alt.condition so altair knows to plot every C/UAs that's not got a value as "lightgrey", we set the condition as < 0 as
                         # we filled the "DK", "-" and "Could Not Calculate Response Rate" as -100. Without this line, it would only
@@ -613,7 +620,7 @@ def streamlit_asq():
                         alt.Y("la_name:N", title=None, sort=sort_value),
                         alt.X(
                             eyfsp_specified_feature_to_plot,
-                            title=eyfsp_major_grouping_column_data + (" %"),
+                            title=eyfsp_major_grouping_column_data,
                         ),
                         tooltip=[
                             alt.Tooltip("la_name:N", title="Local Authority"),
@@ -622,6 +629,7 @@ def streamlit_asq():
                                 title=eyfsp_major_grouping_column_data,
                                 format=",.2f",
                             ),
+                            alt.Tooltip("children_number:Q", title="Population Size"),
                         ],
                     )
                     .properties(width=600)
@@ -689,7 +697,7 @@ def streamlit_asq():
                         alt.Tooltip("characteristic_type:N", title="Demographic Group"),
                         alt.Tooltip(
                             eyfsp_specified_feature_to_plot_demo,
-                            title=eyfsp_major_grouping_column_data + "(%)",
+                            title=eyfsp_major_grouping_column_data,
                             format=",.2f",
                         ),
                     ],
