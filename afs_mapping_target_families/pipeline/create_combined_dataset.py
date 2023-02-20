@@ -12,31 +12,6 @@ import json
 from nesta_ds_utils.loading_saving.S3 import upload_obj
 from afs_mapping_target_families import BUCKET_NAME
 
-
-def get_annual_totals(col_data):
-    if "dk" in col_data.values or "DK" in col_data.values or "-" in col_data.values:
-        return "Could not compute"
-    else:
-        return col_data.sum()
-
-
-def get_annual_avg(above_avg_total, total):
-    if (above_avg_total == "Could not compute") or total == "Could not compute":
-        return "Could not compute"
-    else:
-        return above_avg_total / total
-
-
-def get_aggregated_percentage(df):
-    overall_above_avg = int
-    total = df.columns.str.contains("n_above_avg")
-    percent = df.columns.str.contains("p_above_avg")
-    for i, row in df.iterrows():
-        overall_above_avg += row[total] * row[percent]
-
-    return overall_above_avg / df[total].sum()
-
-
 if __name__ == "__main__":
     raw_dfs = [
         get_q1_21_22(),
@@ -129,4 +104,4 @@ if __name__ == "__main__":
         ] = eyfsp_score
 
     # save compiled data to S3
-    upload_obj(yearly_df, BUCKET_NAME, "processed/2021_2022_compiled_v2.csv")
+    upload_obj(yearly_df, BUCKET_NAME, "processed/2021_2022_compiled.csv")
