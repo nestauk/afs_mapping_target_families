@@ -532,7 +532,7 @@ def streamlit_asq():
                                 eyfsp_column_selection_actual_column_name,
                                 "la_name",
                                 "region_name",
-                                "children_number"
+                                "children_number",
                             ],
                         ),
                         # We then can filter the data if you only want to have a selection of LSOAs.
@@ -712,10 +712,10 @@ def streamlit_asq():
             st.header("Datasets")
             st.markdown("The plots on this dashboard rely on three datasets:")
             st.markdown(
-                "1. [Quarterly outcomes at age 2](https://www.gov.uk/government/statistics/child-development-outcomes-at-2-to-2-and-a-half-years-quarterly-data-for-2021-to-2022): This is the ASQ dataset used for the analysis"
+                "1. [Annual outcomes at age 2](https://www.gov.uk/government/statistics/child-development-outcomes-at-2-to-2-and-a-half-years-annual-data-2021-to-2022): This is the ASQ dataset used for the analysis"
             )
             st.markdown(
-                "2. [Annual EYFSP scores from 2021/2022 - Headline measures by characteristics](https://explore-education-statistics.service.gov.uk/data-catalogue/early-years-foundation-stage-profile-results/2021-22): This is used to generate statistics on the % of children reaching a GLD from each county/unitary authority"
+                "2. [Annual EYFSP scores from 2021/2022 - Headline measures by characteristics](https://explore-education-statistics.service.gov.uk/data-catalogue/early-years-foundation-stage-profile-results/2021-22): This is used to generate statistics on the % of children reaching a GLD from each county/unitary authority, as well as populate the Age 5 tab"
             )
             st.markdown(
                 "3. [Census 2021 age by single year](https://www.ons.gov.uk/datasets/TS007/editions/2021/versions/1): This is used to estimate the response rate for each county/unitary authority"
@@ -767,16 +767,8 @@ def streamlit_asq():
 
             st.header("Data Manipulation")
             st.markdown(
-                "The following steps were taken to clean the data before it was presented in the dashboard:"
+                "The following steps were taken to enhance the data before it was presented in the dashboard:"
             )
-            st.markdown("**Aggregating Quarterly ASQ Data**")
-            st.markdown(
-                "The raw ASQ data is broken down quarterly covering the date ranges: April - June 2021; July - September 2021; October - December 2021; January - March 2022. We add an additional date range 'Annual' covering the entire period from April 2021 - March 2022"
-            )
-            st.markdown(
-                "For each local authority, we calculate the total number of students who answered the question for that category and the total number of students who were above average for the category, and use those totals to calculate the annual percent of students who were above average for that category. If an LA submitted 'Don't know' (represented by 'dk' or 'DK' in the raw data) for one of the categories then we do not display the data aggregated annually"
-            )
-
             st.markdown("**Estimating Response Rates**")
             st.markdown(
                 "Response rates are estimated using population estimates from the Census 2021 data. The response rate is calculated as the Total number of students who answered all 5 categories over the year / Total number of 1 year olds when the census was conducted in March 2021."
