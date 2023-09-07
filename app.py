@@ -410,7 +410,7 @@ def streamlit_asq():
                     st.altair_chart(boxplot)
         with tab2:
             st.title("Outcomes Measured by the Early Years Foundation Stage Profile")
-            eyfsp_data = get_la_level(local=True)
+            eyfsp_data = get_la_level()
 
             click = alt.selection_multi(fields=["la_name"])
 
@@ -506,12 +506,12 @@ def streamlit_asq():
                 ]
 
             if len(eyfsp_region_selections) > 0:
-                overall_data = get_region_level(local=True)
+                overall_data = get_region_level()
                 overall_data = overall_data.loc[overall_data["region_name"].isin(
                     eyfsp_region_selections)]
 
             else:
-                overall_data = get_national_level(local=True)
+                overall_data = get_national_level()
 
             if len(demographic_selections) > 0:
                 overall_data = overall_data.loc[overall_data["characteristic_type"].isin(demographic_selections)
