@@ -1,0 +1,157 @@
+,time_period,time_identifier,geographic_level,country_code,country_name,region_code,region_name,old_la_code,new_la_code,la_name,lad_code,lad_name,characteristic,characteristic_type,gender,children_number,average_elgs,elg_number,elg_percentage,comm_lang_lit_number,comm_lang_lit_percentage,gld_number,gld_percentage
+0,202122,Academic year,National,E92000001,England,,,,,,,,Total,Total,Total,622583,14.100000,394514,63.400000,417453,67.100000,405723,65.200000
+1,202122,Academic year,National,E92000001,England,,,,,,,,Total,Total,Girls,304334,14.800000,214817,70.600000,224089,73.600000,218923,71.900000
+2,202122,Academic year,National,E92000001,England,,,,,,,,Total,Total,Boys,318249,13.300000,179697,56.500000,193364,60.800000,186800,58.700000
+3,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,White,Total,439484,14.300000,284583,64.800000,300372,68.300000,291390,66.300000
+4,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,White,Girls,214421,15.000000,154153,71.900000,160416,74.800000,156502,73.000000
+5,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,White,Boys,225063,13.600000,130430,58.000000,139956,62.200000,134888,59.900000
+6,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Mixed/multiple ethnic groups,Total,45311,14.200000,29518,65.100000,31176,68.800000,30348,67.000000
+7,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Mixed/multiple ethnic groups,Girls,22223,15.000000,16096,72.400000,16748,75.400000,16397,73.800000
+8,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Mixed/multiple ethnic groups,Boys,23088,13.500000,13422,58.100000,14428,62.500000,13951,60.400000
+9,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Asian/Asian British,Total,74613,13.500000,46318,62.100000,49288,66.100000,48451,64.900000
+10,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Asian/Asian British,Girls,36592,14.500000,25370,69.300000,26640,72.800000,26239,71.700000
+11,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Asian/Asian British,Boys,38021,12.600000,20948,55.100000,22648,59.600000,22212,58.400000
+12,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Black/African/Caribbean/Black British,Total,31183,13.100000,18109,58.100000,19448,62.400000,18885,60.600000
+13,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Black/African/Caribbean/Black British,Girls,15501,14.300000,10383,67.000000,10941,70.600000,10708,69.100000
+14,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Black/African/Caribbean/Black British,Boys,15682,12.000000,7726,49.300000,8507,54.200000,8177,52.100000
+15,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Other ethnic group,Total,13574,12.600000,7148,52.700000,7686,56.600000,7511,55.300000
+16,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Other ethnic group,Girls,6620,13.500000,3949,59.700000,4175,63.100000,4086,61.700000
+17,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Other ethnic group,Boys,6954,11.700000,3199,46.000000,3511,50.500000,3425,49.300000
+18,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Unclassified,Total,18418,12.000000,8838,48.000000,9483,51.500000,9138,49.600000
+19,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Unclassified,Girls,8977,12.900000,4866,54.200000,5169,57.600000,4991,55.600000
+20,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: major,Unclassified,Boys,9441,11.200000,3972,42.100000,4314,45.700000,4147,43.900000
+21,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White British,Total,389889,14.400000,255572,65.500000,269464,69.100000,261214,67.000000
+22,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White British,Girls,190029,15.100000,138254,72.800000,143738,75.600000,140134,73.700000
+23,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White British,Boys,199860,13.800000,117318,58.700000,125726,62.900000,121080,60.600000
+24,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Irish,Total,1483,14.600000,1014,68.400000,1071,72.200000,1033,69.700000
+25,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Irish,Girls,714,15.100000,538,75.400000,553,77.500000,542,75.900000
+26,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Irish,Boys,769,14.100000,476,61.900000,518,67.400000,491,63.800000
+27,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Traveller of Irish heritage,Total,674,11.000000,233,34.600000,247,36.600000,238,35.300000
+28,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Traveller of Irish heritage,Girls,330,11.900000,131,39.700000,137,41.500000,135,40.900000
+29,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Traveller of Irish heritage,Boys,344,10.200000,102,29.700000,110,32.000000,103,29.900000
+30,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Gypsy/Roma,Total,2182,10.400000,653,29.900000,711,32.600000,682,31.300000
+31,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Gypsy/Roma,Girls,1078,11.500000,398,36.900000,429,39.800000,411,38.100000
+32,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Gypsy/Roma,Boys,1104,9.300000,255,23.100000,282,25.500000,271,24.500000
+33,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other white background,Total,45256,13.600000,27111,59.900000,28879,63.800000,28223,62.400000
+34,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other white background,Girls,22270,14.400000,14832,66.600000,15559,69.900000,15280,68.600000
+35,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other white background,Boys,22986,12.800000,12279,53.400000,13320,57.900000,12943,56.300000
+36,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White and black Caribbean,Total,10180,14.000000,6158,60.500000,6536,64.200000,6314,62.000000
+37,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White and black Caribbean,Girls,5096,14.800000,3458,67.900000,3618,71.000000,3522,69.100000
+38,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White and black Caribbean,Boys,5084,13.200000,2700,53.100000,2918,57.400000,2792,54.900000
+39,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White and black African,Total,5924,14.200000,3839,64.800000,4046,68.300000,3953,66.700000
+40,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White and black African,Girls,2918,15.100000,2142,73.400000,2217,76.000000,2178,74.600000
+41,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White and black African,Boys,3006,13.200000,1697,56.500000,1829,60.800000,1775,59.000000
+42,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White and Asian,Total,11346,14.600000,7880,69.500000,8299,73.100000,8107,71.500000
+43,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White and Asian,Girls,5648,15.300000,4294,76.000000,4462,79.000000,4383,77.600000
+44,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,White and Asian,Boys,5698,14.000000,3586,62.900000,3837,67.300000,3724,65.400000
+45,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other mixed/multiple ethnic background,Total,17861,14.200000,11641,65.200000,12295,68.800000,11974,67.000000
+46,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other mixed/multiple ethnic background,Girls,8561,14.900000,6202,72.400000,6451,75.400000,6314,73.800000
+47,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other mixed/multiple ethnic background,Boys,9300,13.400000,5439,58.500000,5844,62.800000,5660,60.900000
+48,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Indian,Total,21746,14.300000,15020,69.100000,15894,73.100000,15650,72.000000
+49,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Indian,Girls,10661,15.200000,8100,76.000000,8480,79.500000,8361,78.400000
+50,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Indian,Boys,11085,13.500000,6920,62.400000,7414,66.900000,7289,65.800000
+51,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Pakistani,Total,26980,13.000000,15404,57.100000,16486,61.100000,16179,60.000000
+52,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Pakistani,Girls,13243,14.000000,8542,64.500000,9012,68.100000,8844,66.800000
+53,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Pakistani,Boys,13737,12.000000,6862,50.000000,7474,54.400000,7335,53.400000
+54,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Bangladeshi,Total,10793,13.100000,6415,59.400000,6854,63.500000,6740,62.400000
+55,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Bangladeshi,Girls,5314,14.100000,3571,67.200000,3760,70.800000,3714,69.900000
+56,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Bangladeshi,Boys,5479,12.000000,2844,51.900000,3094,56.500000,3026,55.200000
+57,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Chinese,Total,3153,14.800000,2261,71.700000,2390,75.800000,2362,74.900000
+58,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Chinese,Girls,1535,15.500000,1195,77.900000,1245,81.100000,1238,80.700000
+59,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Chinese,Boys,1618,14.100000,1066,65.900000,1145,70.800000,1124,69.500000
+60,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other Asian background,Total,11941,13.300000,7218,60.400000,7664,64.200000,7520,63.000000
+61,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other Asian background,Girls,5839,14.300000,3962,67.900000,4143,71.000000,4082,69.900000
+62,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other Asian background,Boys,6102,12.400000,3256,53.400000,3521,57.700000,3438,56.300000
+63,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Black Caribbean,Total,4913,13.500000,2857,58.200000,3072,62.500000,2958,60.200000
+64,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Black Caribbean,Girls,2528,14.500000,1691,66.900000,1787,70.700000,1735,68.600000
+65,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Black Caribbean,Boys,2385,12.500000,1166,48.900000,1285,53.900000,1223,51.300000
+66,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Black African,Total,21852,13.100000,12780,58.500000,13719,62.800000,13355,61.100000
+67,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Black African,Girls,10806,14.300000,7283,67.400000,7672,71.000000,7527,69.700000
+68,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Black African,Boys,11046,11.900000,5497,49.800000,6047,54.700000,5828,52.800000
+69,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other black background,Total,4418,13.000000,2472,56.000000,2657,60.100000,2572,58.200000
+70,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other black background,Girls,2167,14.100000,1409,65.000000,1482,68.400000,1446,66.700000
+71,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other black background,Boys,2251,11.800000,1063,47.200000,1175,52.200000,1126,50.000000
+72,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other ethnic group,Total,13574,12.600000,7148,52.700000,7686,56.600000,7511,55.300000
+73,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other ethnic group,Girls,6620,13.500000,3949,59.700000,4175,63.100000,4086,61.700000
+74,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Any other ethnic group,Boys,6954,11.700000,3199,46.000000,3511,50.500000,3425,49.300000
+75,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Unclassified,Total,18418,12.000000,8838,48.000000,9483,51.500000,9138,49.600000
+76,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Unclassified,Girls,8977,12.900000,4866,54.200000,5169,57.600000,4991,55.600000
+77,202122,Academic year,National,E92000001,England,,,,,,,,Ethnic group: minor,Unclassified,Boys,9441,11.200000,3972,42.100000,4314,45.700000,4147,43.900000
+78,202122,Academic year,National,E92000001,England,,,,,,,,First language,Known or believed to be English,Total,484926,14.400000,317699,65.500000,334981,69.100000,325156,67.100000
+79,202122,Academic year,National,E92000001,England,,,,,,,,First language,Known or believed to be English,Girls,237149,15.100000,172560,72.800000,179377,75.600000,175089,73.800000
+80,202122,Academic year,National,E92000001,England,,,,,,,,First language,Known or believed to be English,Boys,247777,13.700000,145139,58.600000,155604,62.800000,150067,60.600000
+81,202122,Academic year,National,E92000001,England,,,,,,,,First language,Known or believed to be other than English,Total,121530,13.100000,69532,57.200000,74445,61.300000,73039,60.100000
+82,202122,Academic year,National,E92000001,England,,,,,,,,First language,Known or believed to be other than English,Girls,59382,14.000000,38285,64.500000,40411,68.100000,39756,66.900000
+83,202122,Academic year,National,E92000001,England,,,,,,,,First language,Known or believed to be other than English,Boys,62148,12.100000,31247,50.300000,34034,54.800000,33283,53.600000
+84,202122,Academic year,National,E92000001,England,,,,,,,,First language,Unclassified,Total,16127,12.000000,7283,45.200000,8027,49.800000,7528,46.700000
+85,202122,Academic year,National,E92000001,England,,,,,,,,First language,Unclassified,Girls,7803,12.700000,3972,50.900000,4301,55.100000,4078,52.300000
+86,202122,Academic year,National,E92000001,England,,,,,,,,First language,Unclassified,Boys,8324,11.200000,3311,39.800000,3726,44.800000,3450,41.400000
+87,202122,Academic year,National,E92000001,England,,,,,,,,Free school meal eligibility,Known to be eligible for free school meals,Total,113882,12.300000,53629,47.100000,57920,50.900000,55944,49.100000
+88,202122,Academic year,National,E92000001,England,,,,,,,,Free school meal eligibility,Known to be eligible for free school meals,Girls,55804,13.400000,30621,54.900000,32574,58.400000,31589,56.600000
+89,202122,Academic year,National,E92000001,England,,,,,,,,Free school meal eligibility,Known to be eligible for free school meals,Boys,58078,11.300000,23008,39.600000,25346,43.600000,24355,41.900000
+90,202122,Academic year,National,E92000001,England,,,,,,,,Free school meal eligibility,Not known to be eligible for free school meals,Total,508701,14.400000,340885,67.000000,359533,70.700000,349779,68.800000
+91,202122,Academic year,National,E92000001,England,,,,,,,,Free school meal eligibility,Not known to be eligible for free school meals,Girls,248530,15.200000,184196,74.100000,191515,77.100000,187334,75.400000
+92,202122,Academic year,National,E92000001,England,,,,,,,,Free school meal eligibility,Not known to be eligible for free school meals,Boys,260171,13.800000,156689,60.200000,168018,64.600000,162445,62.400000
+93,202122,Academic year,National,E92000001,England,,,,,,,,Term of birth,Autumn-born,Total,214746,14.800000,154960,72.200000,162407,75.600000,158570,73.800000
+94,202122,Academic year,National,E92000001,England,,,,,,,,Term of birth,Autumn-born,Girls,104111,15.500000,82110,78.900000,84876,81.500000,83325,80.000000
+95,202122,Academic year,National,E92000001,England,,,,,,,,Term of birth,Autumn-born,Boys,110635,14.200000,72850,65.800000,77531,70.100000,75245,68.000000
+96,202122,Academic year,National,E92000001,England,,,,,,,,Term of birth,Spring-born,Total,197995,14.100000,126673,64.000000,133996,67.700000,130305,65.800000
+97,202122,Academic year,National,E92000001,England,,,,,,,,Term of birth,Spring-born,Girls,97124,14.900000,69266,71.300000,72217,74.400000,70604,72.700000
+98,202122,Academic year,National,E92000001,England,,,,,,,,Term of birth,Spring-born,Boys,100871,13.400000,57407,56.900000,61779,61.200000,59701,59.200000
+99,202122,Academic year,National,E92000001,England,,,,,,,,Term of birth,Summer-born,Total,209842,13.200000,112881,53.800000,121050,57.700000,116848,55.700000
+100,202122,Academic year,National,E92000001,England,,,,,,,,Term of birth,Summer-born,Girls,103099,14.100000,63441,61.500000,66996,65.000000,64994,63.000000
+101,202122,Academic year,National,E92000001,England,,,,,,,,Term of birth,Summer-born,Boys,106743,12.300000,49440,46.300000,54054,50.600000,51854,48.600000
+102,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,No identified SEN,Total,552523,14.900000,381571,69.100000,402018,72.800000,391972,70.900000
+103,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,No identified SEN,Girls,282203,15.400000,209616,74.300000,218181,77.300000,213489,75.700000
+104,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,No identified SEN,Boys,270320,14.500000,171955,63.600000,183837,68.000000,178483,66.000000
+105,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,All SEN,Total,63259,7.000000,11177,17.700000,13475,21.300000,11876,18.800000
+106,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,All SEN,Girls,18790,7.800000,4225,22.500000,4831,25.700000,4405,23.400000
+107,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,All SEN,Boys,44469,6.700000,6952,15.600000,8644,19.400000,7471,16.800000
+108,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,SEN support,Total,49629,8.300000,10717,21.600000,12799,25.800000,11379,22.900000
+109,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,SEN support,Girls,14892,9.200000,4057,27.200000,4606,30.900000,4228,28.400000
+110,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,SEN support,Boys,34737,7.900000,6660,19.200000,8193,23.600000,7151,20.600000
+111,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,EHC plan,Total,13630,2.400000,460,3.400000,676,5.000000,497,3.600000
+112,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,EHC plan,Girls,3898,2.600000,168,4.300000,225,5.800000,177,4.500000
+113,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,EHC plan,Boys,9732,2.400000,292,3.000000,451,4.600000,320,3.300000
+114,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,Unclassified,Total,6801,8.900000,1766,26.000000,1960,28.800000,1875,27.600000
+115,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,Unclassified,Girls,3341,9.700000,976,29.200000,1077,32.200000,1029,30.800000
+116,202122,Academic year,National,E92000001,England,,,,,,,,SEN provision,Unclassified,Boys,3460,8.200000,790,22.800000,883,25.500000,846,24.500000
+117,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Specific learning difficulty,Total,1351,5.700000,139,10.300000,185,13.700000,146,10.800000
+118,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Specific learning difficulty,Girls,420,5.600000,42,10.000000,53,12.600000,44,10.500000
+119,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Specific learning difficulty,Boys,931,5.800000,97,10.400000,132,14.200000,102,11.000000
+120,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Moderate learning difficulty,Total,2921,5.400000,277,9.500000,346,11.800000,298,10.200000
+121,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Moderate learning difficulty,Girls,994,6.000000,103,10.400000,126,12.700000,108,10.900000
+122,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Moderate learning difficulty,Boys,1927,5.200000,174,9.000000,220,11.400000,190,9.900000
+123,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Severe learning difficulty,Total,1267,0.700000,15,1.200000,17,1.300000,16,1.300000
+124,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Severe learning difficulty,Girls,429,0.700000,6,1.400000,6,1.400000,6,1.400000
+125,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Severe learning difficulty,Boys,838,0.700000,9,1.100000,11,1.300000,10,1.200000
+126,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Profound and multiple learning difficulties,Total,659,0.600000,3,0.500000,7,1.100000,4,0.600000
+127,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Profound and multiple learning difficulties,Girls,275,0.600000,2,0.700000,5,1.800000,2,0.700000
+128,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Profound and multiple learning difficulties,Boys,384,0.600000,1,0.300000,2,0.500000,2,0.500000
+129,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,"Social, emotional and mental health",Total,6616,8.700000,1217,18.400000,1768,26.700000,1297,19.600000
+130,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,"Social, emotional and mental health",Girls,1541,9.900000,405,26.300000,531,34.500000,429,27.800000
+131,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,"Social, emotional and mental health",Boys,5075,8.400000,812,16.000000,1237,24.400000,868,17.100000
+132,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,"Speech, language and communication needs",Total,35092,7.700000,7132,20.300000,8179,23.300000,7584,21.600000
+133,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,"Speech, language and communication needs",Girls,10444,8.500000,2638,25.300000,2916,27.900000,2755,26.400000
+134,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,"Speech, language and communication needs",Boys,24648,7.300000,4494,18.200000,5263,21.400000,4829,19.600000
+135,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Hearing impairment,Total,997,9.900000,327,32.800000,347,34.800000,335,33.600000
+136,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Hearing impairment,Girls,428,11.000000,172,40.200000,181,42.300000,175,40.900000
+137,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Hearing impairment,Boys,569,9.100000,155,27.200000,166,29.200000,160,28.100000
+138,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Visual impairment,Total,541,10.400000,196,36.200000,219,40.500000,204,37.700000
+139,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Visual impairment,Girls,244,11.200000,106,43.400000,115,47.100000,107,43.900000
+140,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Visual impairment,Boys,297,9.700000,90,30.300000,104,35.000000,97,32.700000
+141,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Multi-sensory impairment,Total,240,8.600000,59,24.600000,77,32.100000,65,27.100000
+142,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Multi-sensory impairment,Girls,88,8.200000,24,27.300000,30,34.100000,25,28.400000
+143,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Multi-sensory impairment,Boys,152,8.800000,35,23.000000,47,30.900000,40,26.300000
+144,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Physical disability,Total,1959,8.700000,497,25.400000,611,31.200000,519,26.500000
+145,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Physical disability,Girls,867,9.200000,253,29.200000,295,34.000000,257,29.600000
+146,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Physical disability,Boys,1092,8.300000,244,22.300000,316,28.900000,262,24.000000
+147,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Autistic spectrum disorder,Total,8319,3.800000,651,7.800000,912,11.000000,710,8.500000
+148,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Autistic spectrum disorder,Girls,1970,4.300000,210,10.700000,268,13.600000,225,11.400000
+149,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Autistic spectrum disorder,Boys,6349,3.700000,441,6.900000,644,10.100000,485,7.600000
+150,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Other difficulty or disability,Total,1565,7.900000,373,23.800000,435,27.800000,386,24.700000
+151,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Other difficulty or disability,Girls,590,8.700000,166,28.100000,186,31.500000,169,28.600000
+152,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,Other difficulty or disability,Boys,975,7.500000,207,21.200000,249,25.500000,217,22.300000
+153,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,SEN support but no specialist assessment of type of need,Total,1507,7.800000,276,18.300000,351,23.300000,297,19.700000
+154,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,SEN support but no specialist assessment of type of need,Girls,440,8.300000,93,21.100000,111,25.200000,98,22.300000
+155,202122,Academic year,National,E92000001,England,,,,,,,,SEN primary need,SEN support but no specialist assessment of type of need,Boys,1067,7.600000,183,17.200000,240,22.500000,199,18.700000
