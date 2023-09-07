@@ -3,5 +3,4 @@ pandas
 openpyxl
 altair
 numpy
-yaml
 streamlit
