@@ -6,12 +6,9 @@ import altair as alt
 import app_utils
 from PIL import Image
 from itertools import chain
-
-# from afs_mapping_target_families.getters.processed.combined_data import (
-#    get_combined_data,
-# )
 import os
 from statistics import mean
+from afs_mapping_target_families.getters.processed.eyfsp import get_la_level, get_national_level, get_region_level
 
 
 @st.cache
@@ -35,14 +32,13 @@ st.set_page_config(
 # this creates a separate container for us to put the header in
 
 # As it's password protected, we've created a function here which means the app can only run if you've typed the password in.
+
+
 def streamlit_asq():
 
     # This sets a spinner so we know that the report is updating as we change the user selections.
     with st.spinner("Updating Report..."):
-        # data = get_combined_data()
-        # FOR NOW, LOAD DATA LOCALLY UNTIL FIGURE OUT A WAY TO CONNECT CLOUD TO AWS
         data = pd.read_csv(f"{current_dir}/datasets/DATA.csv")
-        # data = pd.read_csv("{PROJECT_DIR}/afs_mapping_target_families/analysis/streamlit_app/datasets/2021_2022_compiled.csv")
         # This radio button lets you pick a larger group so you're not overwhelmed by all the possible categories
         header = st.container()
         with header:
@@ -69,8 +65,6 @@ def streamlit_asq():
                     date_selections = st.selectbox(
                         "Choose Date Range", date_filter, index=len(date_filter) - 1
                     )
-                ## Alternative if you want multiple quarters
-                # date_selections = st.multiselect("Choose Quarters", date_filter, "April 2021 - June 2021")
 
                 # This lets you select multiple regions. So you can choose North and Mid Wales for example at the same time.
                 with col2:
@@ -146,7 +140,8 @@ def streamlit_asq():
                             for cua in cuas_to_plot
                             if cua
                             in list(
-                                data[data["Region"].isin(region_selections)]["ONS code"]
+                                data[data["Region"].isin(
+                                    region_selections)]["ONS code"]
                             )
                         ]
 
@@ -157,23 +152,16 @@ def streamlit_asq():
                     )
 
                     map_data = data.copy()
-                    ## Replace missing values with a -1
+                    # Replace missing values with a -1
 
-                    ## Filter the data to the date selection
+                    # Filter the data to the date selection
                     map_data = map_data[map_data["date"] == date_selections]
-                    ## Convert the column to a float64 so it will plot correctly
-
-                    ## If you wanted to group the date selections (i.e. select multiple dates), you'll need this bit of code below.
-                    # if len(date_selections) != 0:
-                    # map_data = map_data[map_data["dates"].isin(date_selections)]
-                    # map_data = map_data.groupby(["ONS code"])[column_selection_actual_column_name].mean()
+                    # Convert the column to a float64 so it will plot correctly
 
                     encoding_type = ":Q"
                     specified_feature_to_plot = (
                         column_selection_actual_column_name + encoding_type
                     )
-
-                    # value_to_plot = mean("datum." + specified_feature_to_plot)
 
                     # This is an alternative condition that I've set up so it plots the C/UAs where there is no value. Earlier on I set the C/UAs which didn't have data to be -100,
                     # so anything that is above 0 we want it to plot normally (i.e. with a colour scale), but if it's got no value, we want it to be a light grey. This sets up the query for later
@@ -200,7 +188,8 @@ def streamlit_asq():
                         map = (
                             alt.Chart(regions)
                             .configure(
-                                padding={"left": 3, "top": 0, "right": 5, "bottom": 0}
+                                padding={"left": 3, "top": 0,
+                                         "right": 5, "bottom": 0}
                             )
                             .mark_geoshape(stroke="white")
                             .transform_lookup(
@@ -233,7 +222,8 @@ def streamlit_asq():
                                         title=major_grouping_column_data,
                                         format=".2f",
                                     ),
-                                    alt.Tooltip("la_name:N", title="Local Authority"),
+                                    alt.Tooltip(
+                                        "la_name:N", title="Local Authority"),
                                     alt.Tooltip("Region:N", title="Region"),
                                     alt.Tooltip(
                                         "date:N",
@@ -298,7 +288,8 @@ def streamlit_asq():
                                 alt.Y("la_name:N", sort=bar_sort_order, title=None),
                                 alt.X(specified_feature_to_plot),
                                 tooltip=[
-                                    alt.Tooltip("la_name:N", title="Local Authority"),
+                                    alt.Tooltip(
+                                        "la_name:N", title="Local Authority"),
                                     alt.Tooltip(
                                         specified_feature_to_plot,
                                         title=specified_feature_to_plot,
@@ -320,7 +311,8 @@ def streamlit_asq():
                                     title="Fraction of Students At or Above Average (%)",
                                 ),
                                 tooltip=[
-                                    alt.Tooltip("la_name:N", title="Local Authority"),
+                                    alt.Tooltip(
+                                        "la_name:N", title="Local Authority"),
                                     alt.Tooltip(
                                         "eyfsp_score:Q",
                                         title="EYFSP - Percent of Students Reaching Good Level of Development",
@@ -418,7 +410,7 @@ def streamlit_asq():
                     st.altair_chart(boxplot)
         with tab2:
             st.title("Outcomes Measured by the Early Years Foundation Stage Profile")
-            eyfsp_data = pd.read_csv(f"{current_dir}/datasets/eyfsp_la_level.csv")
+            eyfsp_data = get_la_level(local=True)
 
             click = alt.selection_multi(fields=["la_name"])
 
@@ -480,7 +472,8 @@ def streamlit_asq():
                         if cua
                         in list(
                             eyfsp_data[
-                                eyfsp_data["region_name"].isin(eyfsp_region_selections)
+                                eyfsp_data["region_name"].isin(
+                                    eyfsp_region_selections)
                             ]["new_la_code"]
                         )
                     ]
@@ -492,7 +485,7 @@ def streamlit_asq():
             demographic_filter = eyfsp_map_data["characteristic_type"].unique()
 
             demographic_selections = st.multiselect(
-                "Filter by a specific demographic group, leave blank to all children (Note: this filter does not affect the chart EYFSP Results by Demographic)",
+                "Filter by a specific demographic group, leave blank to view stats for all children (Note: this filter does not affect the chart EYFSP Results by Demographic)",
                 demographic_filter,
             )
 
@@ -512,11 +505,30 @@ def streamlit_asq():
                     & (eyfsp_map_data["gender"] == "Total")
                 ]
 
+            if len(eyfsp_region_selections) > 0:
+                overall_data = get_region_level(local=True)
+                overall_data = overall_data.loc[overall_data["region_name"].isin(
+                    eyfsp_region_selections)]
+
+            else:
+                overall_data = get_national_level(local=True)
+
+            if len(demographic_selections) > 0:
+                overall_data = overall_data.loc[overall_data["characteristic_type"].isin(demographic_selections)
+                                                ]
+            else:
+                overall_data = overall_data.loc[overall_data["characteristic_type"] == "Total"]
+
+            overall_data = overall_data.loc[overall_data["gender"] == "Total"]
+
+            overall_metric = ", ".join(str(i) for i in overall_data[
+                eyfsp_column_selection_actual_column_name].values)
+            st.markdown(
+                f"**The overall {eyfsp_major_grouping_column_data} for your selection is {overall_metric}**")
+
             col4, col5 = st.columns(2, gap="large")
             with col4:
 
-                # tab6, tab7 = st.tabs(["Map", "Bar"])
-                # with tab6:
                 eyfsp_map = (
                     alt.Chart(regions)
                     .configure(padding={"left": 3, "top": 0, "right": 5, "bottom": 0})
@@ -553,7 +565,8 @@ def streamlit_asq():
                             ),
                             alt.Tooltip("la_name:N", title="Local Authority"),
                             alt.Tooltip("region_name:N", title="Region"),
-                            alt.Tooltip("children_number:Q", title="Population Size"),
+                            alt.Tooltip("children_number:Q",
+                                        title="Population Size"),
                         ],
                         # We've used alt.condition so altair knows to plot every C/UAs that's not got a value as "lightgrey", we set the condition as < 0 as
                         # we filled the "DK", "-" and "Could Not Calculate Response Rate" as -100. Without this line, it would only
@@ -573,7 +586,8 @@ def streamlit_asq():
                             ),
                             alt.value("lightgrey"),
                         ),
-                        opacity=alt.condition(click, alt.value(1), alt.value(0.2)),
+                        opacity=alt.condition(
+                            click, alt.value(1), alt.value(0.2)),
                     )
                     .properties(width=500, height=600)
                     .configure_view(strokeWidth=0)
@@ -630,7 +644,8 @@ def streamlit_asq():
                                 title=eyfsp_major_grouping_column_data,
                                 format=",.2f",
                             ),
-                            alt.Tooltip("children_number:Q", title="Population Size"),
+                            alt.Tooltip("children_number:Q",
+                                        title="Population Size"),
                         ],
                     )
                     .properties(width=600)
@@ -695,7 +710,8 @@ def streamlit_asq():
                     ),
                     alt.X("characteristic_type:N", sort="-y", title=None),
                     tooltip=[
-                        alt.Tooltip("characteristic_type:N", title="Demographic Group"),
+                        alt.Tooltip("characteristic_type:N",
+                                    title="Demographic Group"),
                         alt.Tooltip(
                             eyfsp_specified_feature_to_plot_demo,
                             title=eyfsp_major_grouping_column_data,

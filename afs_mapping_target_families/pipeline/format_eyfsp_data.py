@@ -8,9 +8,10 @@ if __name__ == "__main__":
     region_level = eyfsp_data[eyfsp_data["geographic_level"] == "Regional"]
     national_level = eyfsp_data[eyfsp_data["geographic_level"] == "National"]
 
-    upload_obj(eyfsp_data, BUCKET_NAME, "processed/eyfsp_la_level.csv")
-    upload_obj(eyfsp_data, BUCKET_NAME, "processed/eyfsp_regional_level.csv")
-    upload_obj(eyfsp_data, BUCKET_NAME, "processed/eyfsp_national_level.csv")
+    upload_obj(la_level, BUCKET_NAME, "processed/eyfsp_la_level.csv")
+    upload_obj(region_level, BUCKET_NAME, "processed/eyfsp_regional_level.csv")
+    upload_obj(national_level, BUCKET_NAME,
+               "processed/eyfsp_national_level.csv")
 
     la_level.to_csv(f"{PROJECT_DIR}/datasets/eyfsp_la_level.csv")
     region_level.to_csv(f"{PROJECT_DIR}/datasets/eyfsp_region_level.csv")
