@@ -10,6 +10,7 @@ import os
 from statistics import mean
 from afs_mapping_target_families.getters.processed.eyfsp import get_la_level, get_national_level, get_region_level
 # here we load the favicon and we set the page config (so what appears in the tab on your web browser)
+current_dir = os.getcwd()
 im = Image.open(f"{current_dir}/images/favicon.ico")
 st.set_page_config(
     page_title="2021-2022 Early Years Development Outcomes", layout="wide", page_icon=im
@@ -21,7 +22,6 @@ def convert_df(df):
     return df.to_csv().encode("utf-8")
 
 
-current_dir = os.getcwd()
 alt.themes.register("nestafont", app_utils.nestafont)
 alt.themes.enable("nestafont")
 
