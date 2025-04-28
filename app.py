@@ -9,6 +9,8 @@ from itertools import chain
 import os
 from statistics import mean
 from afs_mapping_target_families.getters.processed.eyfsp import get_la_level, get_national_level, get_region_level
+# here we load the favicon and we set the page config (so what appears in the tab on your web browser)
+im = Image.open(f"{current_dir}/images/favicon.ico")
 st.set_page_config(
     page_title="2021-2022 Early Years Development Outcomes", layout="wide", page_icon=im
 )
@@ -24,9 +26,6 @@ alt.themes.register("nestafont", app_utils.nestafont)
 alt.themes.enable("nestafont")
 
 colours = app_utils.NESTA_COLOURS
-
-# here we load the favicon and we set the page config (so what appears in the tab on your web browser)
-im = Image.open(f"{current_dir}/images/favicon.ico")
 
 # this creates a separate container for us to put the header in
 
